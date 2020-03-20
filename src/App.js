@@ -5,6 +5,17 @@ import Login from './Login';
 import Orders from './Orders';
 import Cart from './Cart';
 import Products from './Products';
+import Home from './Home';
+
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useRouteMatch,
+  useParams
+} from "react-router-dom";
+
 
 const headers = ()=> {
   const token = window.localStorage.getItem('token');
@@ -22,6 +33,8 @@ const App = ()=> {
   const [ cart, setCart ] = useState({});
   const [ products, setProducts ] = useState([]);
   const [ lineItems, setLineItems ] = useState([]);
+
+  
 
   useEffect(()=> {
     axios.get('/api/products')
@@ -120,24 +133,43 @@ const App = ()=> {
 
   const { view } = params;
 
-  if(!auth.id){
-    return (
-      <Login login={ login }/>
-    );
-  }
-  else {
-    return (
+  return (
+
+    <Router>
       <div>
-        <h1>Foo, Bar, Bazz.. etc Store</h1>
-        <button onClick={ logout }>Logout { auth.username } </button>
-        <div className='horizontal'>
-          <Products addToCart={ addToCart } products={ products } />
+        <nav>
+          <ul>
+            <li>
+              <Link to="/home">Home</Link>
+            </li>
+            <li>
+              <Link to="/cart">Cart</Link>
+            </li>
+          </ul>
+        </nav>
+
+      <Switch>
+        <Route path="/home">
+          <Home 
+            auth={auth}
+            login={login}
+            logout={logout} 
+            addToCart={ addToCart } 
+            products={ products } 
+            lineItems={ lineItems } 
+            removeFromCart={ removeFromCart } 
+            cart={ cart } 
+            createOrder={ createOrder }
+            orders={ orders }
+            />
+        </Route>
+        <Route path="/cart">
           <Cart lineItems={ lineItems } removeFromCart={ removeFromCart } cart={ cart } createOrder={ createOrder } products={ products }/>
-          <Orders lineItems={ lineItems } products={ products } orders={ orders }/>
-        </div>
+        </Route>
+      </Switch>
       </div>
-    );
-  }
+    </Router>
+  )
 };
 
 export default App;
