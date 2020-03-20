@@ -131,10 +131,10 @@ const App = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/cart">Cart</Link>
+              <Link to="cart">Cart</Link>
             </li>
             <li>
               <Link to="/orders">Orders</Link>
@@ -143,7 +143,7 @@ const App = () => {
         </nav>
 
         <Switch>
-          <Route path="/home">
+          <Route exact path="/">
             <Home
               auth={auth}
               login={login}
@@ -157,7 +157,7 @@ const App = () => {
               orders={orders}
             />
           </Route>
-          <Route path="/cart">
+          <Route exact path="/cart">
             <Cart
               lineItems={lineItems}
               removeFromCart={removeFromCart}
@@ -166,7 +166,7 @@ const App = () => {
               products={products}
             />
           </Route>
-          <Route path="/orders">
+          <Route exact path="/orders">
             <Orders
               lineItems={lineItems}
               orders={orders}
