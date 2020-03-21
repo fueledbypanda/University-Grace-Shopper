@@ -16,7 +16,7 @@ const Products = ({ products, addToCart, setProductView })=> {
             products.map( product => {
               return (
                 <li key={ product.id }>
-                    <Link to={`/product/${product.id}`} onClick={(el) => setProductView(product)}>
+                    <Link to={`/products/${product.id}`} onClick={(el) => setProductView(product)}>
                       <span>
                       { product.name }
                       </span>

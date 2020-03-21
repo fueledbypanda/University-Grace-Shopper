@@ -4,6 +4,7 @@ import axios from 'axios';
 import Orders from './Orders';
 import Cart from './Cart';
 import Home from './Home';
+import Products from './Products';
 
 import {
   BrowserRouter as Router,
@@ -11,6 +12,7 @@ import {
   Route,
   Link
 } from 'react-router-dom';
+
 import ProductPage from './ProductPage';
 
 const headers = () => {
@@ -136,6 +138,9 @@ const App = () => {
             <li>
               <Link to="/orders">Orders</Link>
             </li>
+            <li>
+              <Link to="/products">Show All</Link>
+            </li>
           </ul>
         </nav>
 
@@ -175,7 +180,10 @@ const App = () => {
               setProductView={setProductView}
             />
           </Route>
-          <Route exact path={`/product/${productView.id}`}>
+          <Route exact path="/products">
+            <Products addToCart={ addToCart } products={ products } productView={productView} setProductView={setProductView}/>
+          </Route>
+          <Route exact path={`/products/${productView.id}`}>
             <ProductPage product={productView} addToCart={addToCart}/>
           </Route>
         </Switch>
