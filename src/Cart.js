@@ -17,7 +17,7 @@ const Cart = ({ lineItems, cart, createOrder, removeFromCart, products, setProdu
                   { ' ' }
                 </Link>
                 <span>
-                  <button onClick={(el) => subtractFromCart(product.id)}>-</button>
+                  <button onClick={(el) => subtractFromCart(product.id, lineItem)}>-</button>
                   <span className='quantity'>Quantity: { lineItem.quantity }</span> 
                   <button onClick={(el) => addToCart(product.id)}>+</button>
                 </span>

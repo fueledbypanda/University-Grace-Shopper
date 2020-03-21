@@ -115,20 +115,23 @@ const App = () => {
     });
   };
 
-  const subtractFromCart = (productId) => { 
-
-    axios.post('/api/subtractItem', { productId }, headers()).then(response => { 
-      const lineItem = response.data;
-      const updated = lineItems.map(item => {
-        if(item.id === lineItem.id) {
-          item.quantity -= 1
+  const subtractFromCart = (productId, lineItem) => { 
+    if(lineItem.quantity > 1) {
+      axios.post('/api/subtractItem', { productId }, headers()).then(response => { 
+        const lineItem = response.data;
+        const updated = lineItems.map(item => {
+          if(item.id === lineItem.id) {
+            item.quantity -= 1
+            return item
+          }
           return item
-        }
-        return item
-      }) 
-
-      setLineItems(updated)
-    })
+        }) 
+  
+        setLineItems(updated)
+      })
+    } else {
+      removeFromCart(lineItem.id)
+    }
   }
     
   const removeFromCart = lineItemId => {
