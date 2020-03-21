@@ -8,8 +8,11 @@ const Products = ({ products, addToCart }) => {
         {products.map(product => {
           return (
             <li key={product.id}>
-              <span>{product.name}</span>
-              <span>${Number(product.price).toFixed(2)}</span>
+              <div>{product.name}</div>
+              <div>
+                <img src={product.image} />
+              </div>
+              <div>${Number(product.price).toFixed(2)}</div>
               <button onClick={() => addToCart(product.id)}>Add to Cart</button>
             </li>
           );
