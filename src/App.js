@@ -131,7 +131,10 @@ const App = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/cart">Cart</Link>
+              <Link to="/cart">
+                  <i className="fas fa-shopping-cart fa-2x"></i>
+                  <span className="cart-amount">{lineItems.length}</span>
+              </Link>
             </li>
             <li>
               <Link to="/orders">Orders</Link>
