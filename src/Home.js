@@ -1,15 +1,10 @@
 import React from 'react'
 import Login from './Login';
-import Products from './Products';
 
 const Home = ({
   auth,
   login,
-  logout,
-  addToCart,
-  products,
-  productView,
-  setProductView
+  logout
 }) => {
 
     if(!auth.id){
