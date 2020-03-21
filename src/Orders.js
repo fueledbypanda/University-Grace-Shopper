@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
 const Orders = ({ lineItems, orders, products, setProductView }) => {
   let totalPrice = 0;
@@ -42,12 +42,15 @@ const Orders = ({ lineItems, orders, products, setProductView }) => {
                   totalPrice += parseFloat(product.price, 10);
                   return (
                     <li key={lineItem.id}>
-                      <Link to={`/product/${product.id}`} onClick={(el) => setProductView(product)}>>
+                      <Link
+                        to={`/product/${product.id}`}
+                        onClick={el => setProductView(product)}
+                      >
                         {product && product.name}
-                        <span className="price">
-                          Price: ${parseFloat(product.price, 10)}
-                        </span>
                       </Link>
+                      <span className="price">
+                        Price: ${parseFloat(product.price, 10)}
+                      </span>
                       <span className="quantity">
                         Quantity: {lineItem.quantity} ($
                         {parseFloat(product.price, 10) * lineItem.quantity})

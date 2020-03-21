@@ -33,7 +33,7 @@ const App = () => {
   const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
   const [lineItems, setLineItems] = useState([]);
-  const [productView, setProductView] = useState([])
+  const [productView, setProductView] = useState([]);
 
   useEffect(() => {
     axios.get('/api/products').then(response => setProducts(response.data));
@@ -148,11 +148,7 @@ const App = () => {
         </nav>
 
         <Switch>
-<<<<<<< HEAD
-          <Route path="/home">
-=======
           <Route exact path="/">
->>>>>>> 2aabf92a0e6624f168fc96ce52f5ced97e09ff47
             <Home
               auth={auth}
               login={login}
@@ -168,11 +164,7 @@ const App = () => {
               setProductView={setProductView}
             />
           </Route>
-<<<<<<< HEAD
-          <Route path="/cart">
-=======
           <Route exact path="/cart">
->>>>>>> 2aabf92a0e6624f168fc96ce52f5ced97e09ff47
             <Cart
               lineItems={lineItems}
               removeFromCart={removeFromCart}
@@ -182,11 +174,7 @@ const App = () => {
               setProductView={setProductView}
             />
           </Route>
-<<<<<<< HEAD
-          <Route path="/orders">
-=======
           <Route exact path="/orders">
->>>>>>> 2aabf92a0e6624f168fc96ce52f5ced97e09ff47
             <Orders
               lineItems={lineItems}
               orders={orders}
@@ -196,7 +184,7 @@ const App = () => {
             />
           </Route>
           <Route exact path={`/product/${productView.id}`}>
-            <ProductPage product={productView} addToCart={addToCart}/>
+            <ProductPage product={productView} addToCart={addToCart} />
           </Route>
         </Switch>
       </div>
