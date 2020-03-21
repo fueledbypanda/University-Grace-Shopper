@@ -23,7 +23,7 @@ const Home = ({
           <h1>Foo, Bar, Bazz.. etc Store</h1>
           <button onClick={ logout }>Logout { auth.username } </button>
           <div className='horizontal'>
-            <Products addToCart={ addToCart } products={ products } productView={productView} setProductView={setProductView}/>
+            <h1>Landing Page</h1>
           </div>
         </div>
       );
