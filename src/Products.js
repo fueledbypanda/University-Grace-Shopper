@@ -1,11 +1,7 @@
 import React, {useState} from 'react';
 import {
   BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  useRouteMatch,
-  useParams
+  Link
 } from "react-router-dom";
 import ProductPage from './ProductPage';
 

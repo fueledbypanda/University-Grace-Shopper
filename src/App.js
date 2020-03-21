@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import qs from 'qs';
 import axios from 'axios';
-import Login from './Login';
 import Orders from './Orders';
 import Cart from './Cart';
-import Products from './Products';
 import Home from './Home';
 
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
-  useRouteMatch,
-  useParams,
+  Link
 } from 'react-router-dom';
 import ProductPage from './ProductPage';
 
@@ -119,13 +115,31 @@ const App = () => {
     });
   };
 
+  const subtractFromCart = (productId, lineItem) => { 
+    if(lineItem.quantity > 1) {
+      axios.post('/api/subtractItem', { productId }, headers()).then(response => { 
+        const lineItem = response.data;
+        const updated = lineItems.map(item => {
+          if(item.id === lineItem.id) {
+            item.quantity -= 1
+            return item
+          }
+          return item
+        }) 
+  
+        setLineItems(updated)
+      })
+    } else {
+      removeFromCart(lineItem.id)
+    }
+  }
+    
   const removeFromCart = lineItemId => {
     axios.delete(`/api/removeFromCart/${lineItemId}`, headers()).then(() => {
       setLineItems(lineItems.filter(_lineItem => _lineItem.id !== lineItemId));
     });
   };
 
-  const { view } = params;
 
   return (
     <Router>
@@ -169,6 +183,8 @@ const App = () => {
               createOrder={createOrder}
               products={products}
               setProductView={setProductView}
+              subtractFromCart={subtractFromCart}
+              addToCart={addToCart}
             />
           </Route>
           <Route exact path="/orders">

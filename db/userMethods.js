@@ -32,6 +32,21 @@ const addToCart = async({ productId, userId })=> {
   }
 };
 
+const subtractItem = async({ productId, userId }) => {
+  const cart = await getCart(userId);
+  const response = await client.query(`SELECT * from "lineItems" WHERE "orderId"=$1 and "productId"=$2`, [ cart.id, productId ]);
+  let lineItem;
+  if(response.rows.length){
+    lineItem = response.rows[0];
+    lineItem.quantity--;
+    return (await client.query(`UPDATE "lineItems" set quantity=$1 WHERE id = $2 returning *`, [ lineItem.quantity, lineItem.id ])).rows[0];
+  }
+  else {
+    return (await client.query(`INSERT INTO "lineItems"("productId", "orderId") values ($1, $2) returning *`, [ productId, cart.id])).rows[0];
+  }
+
+}
+
 const removeFromCart = async({ lineItemId, userId })=> {
   const cart = await getCart(userId);
   await client.query(`DELETE FROM "lineItems" WHERE id=$1 and "orderId" = $2 returning *`, [ lineItemId, cart.id ]);
@@ -54,5 +69,6 @@ module.exports = {
   addToCart,
   removeFromCart,
   createOrder,
-  getLineItems
+  getLineItems,
+  subtractItem
 }
