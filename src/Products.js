@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
+import { BrowserRouter as Router, Link } from "react-router-dom";
+import ProductPage from "./ProductPage";
 
-const Products = ({ products, addToCart }) => {
+const Products = ({ products, addToCart, setProductView }) => {
   return (
     <div>
       <h2>Products</h2>
@@ -8,11 +10,14 @@ const Products = ({ products, addToCart }) => {
         {products.map(product => {
           return (
             <li key={product.id}>
-              <div>{product.name}</div>
-              <div>
+              <Link
+                to={`/product/${product.id}`}
+                onClick={el => setProductView(product)}
+              >
+                <div>{product.name}</div>
                 <img src={product.image} />
-              </div>
-              <div>${Number(product.price).toFixed(2)}</div>
+                <div>${Number(product.price).toFixed(2)}</div>
+              </Link>
               <button onClick={() => addToCart(product.id)}>Add to Cart</button>
             </li>
           );
