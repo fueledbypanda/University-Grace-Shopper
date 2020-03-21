@@ -1,6 +1,7 @@
 import React from 'react';
+import {Link} from 'react-router-dom'
 
-const Orders = ({ lineItems, orders, products }) => {
+const Orders = ({ lineItems, orders, products, setProductView }) => {
   let totalPrice = 0;
   return (
     <div>
@@ -41,10 +42,12 @@ const Orders = ({ lineItems, orders, products }) => {
                   totalPrice += parseFloat(product.price, 10);
                   return (
                     <li key={lineItem.id}>
-                      {product && product.name}
-                      <span className="price">
-                        Price: ${parseFloat(product.price, 10)}
-                      </span>
+                      <Link to={`/product/${product.id}`} onClick={(el) => setProductView(product)}>>
+                        {product && product.name}
+                        <span className="price">
+                          Price: ${parseFloat(product.price, 10)}
+                        </span>
+                      </Link>
                       <span className="quantity">
                         Quantity: {lineItem.quantity} ($
                         {parseFloat(product.price, 10) * lineItem.quantity})

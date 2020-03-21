@@ -15,6 +15,7 @@ import {
   useRouteMatch,
   useParams,
 } from 'react-router-dom';
+import ProductPage from './ProductPage';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -32,6 +33,7 @@ const App = () => {
   const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
   const [lineItems, setLineItems] = useState([]);
+  const [productView, setProductView] = useState([])
 
   useEffect(() => {
     axios.get('/api/products').then(response => setProducts(response.data));
@@ -134,7 +136,7 @@ const App = () => {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="cart">Cart</Link>
+              <Link to="/cart">Cart</Link>
             </li>
             <li>
               <Link to="/orders">Orders</Link>
@@ -162,6 +164,8 @@ const App = () => {
               cart={cart}
               createOrder={createOrder}
               orders={orders}
+              productView={productView}
+              setProductView={setProductView}
             />
           </Route>
 <<<<<<< HEAD
@@ -175,6 +179,7 @@ const App = () => {
               cart={cart}
               createOrder={createOrder}
               products={products}
+              setProductView={setProductView}
             />
           </Route>
 <<<<<<< HEAD
@@ -187,7 +192,11 @@ const App = () => {
               orders={orders}
               cart={cart}
               products={products}
+              setProductView={setProductView}
             />
+          </Route>
+          <Route exact path={`/product/${productView.id}`}>
+            <ProductPage product={productView} addToCart={addToCart}/>
           </Route>
         </Switch>
       </div>
