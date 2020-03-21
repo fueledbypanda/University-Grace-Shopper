@@ -131,10 +131,13 @@ const App = () => {
         <nav>
           <ul>
             <li>
-              <Link to="/home">Home</Link>
+              <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/cart">Cart</Link>
+              <Link to="cart">Cart</Link>
+            </li>
+            <li>
+              <Link to="/orders">Orders</Link>
             </li>
             <li>
               <Link to="/orders">Orders</Link>
@@ -143,7 +146,11 @@ const App = () => {
         </nav>
 
         <Switch>
+<<<<<<< HEAD
           <Route path="/home">
+=======
+          <Route exact path="/">
+>>>>>>> 2aabf92a0e6624f168fc96ce52f5ced97e09ff47
             <Home
               auth={auth}
               login={login}
@@ -157,7 +164,11 @@ const App = () => {
               orders={orders}
             />
           </Route>
+<<<<<<< HEAD
           <Route path="/cart">
+=======
+          <Route exact path="/cart">
+>>>>>>> 2aabf92a0e6624f168fc96ce52f5ced97e09ff47
             <Cart
               lineItems={lineItems}
               removeFromCart={removeFromCart}
@@ -166,7 +177,11 @@ const App = () => {
               products={products}
             />
           </Route>
+<<<<<<< HEAD
           <Route path="/orders">
+=======
+          <Route exact path="/orders">
+>>>>>>> 2aabf92a0e6624f168fc96ce52f5ced97e09ff47
             <Orders
               lineItems={lineItems}
               orders={orders}
