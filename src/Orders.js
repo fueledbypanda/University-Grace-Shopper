@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Axios from 'axios';
 
-const Orders = ({ lineItems, orders, products, setProductView }) => {
+const Orders = ({
+  lineItems,
+  orders,
+  products,
+  setProductView,
+  addresses,
+  setAddresses,
+  userAddresses,
+}) => {
   let totalPrice = 0;
   return (
     <div>
@@ -12,15 +21,40 @@ const Orders = ({ lineItems, orders, products, setProductView }) => {
           const _lineItems = lineItems.filter(
             lineItem => lineItem.orderId === order.id
           );
+          const [streetAddress, setStreetAddress] = useState('');
+          const [state, setState] = useState('');
+          const [zipcode, setZipcode] = useState('');
+          const handleSubmit = async e => {
+            e.preventDefault();
+            const created = (
+              await Axios.post('/api/addresses/', {
+                streetAddress,
+                state,
+                zipcode,
+              })
+            ).data;
+            setAddresses([...addresses, created]);
+          };
+
           return (
             <li key={order.id}>
               <div>OrderID: {order.id.slice(0, 4)}</div>
               <span className="orderDate">Order Date: {order.createdAt}</span>
-              <form className="addressForm">
+              <form className="addressForm" onSubmit={handleSubmit}>
                 <input
-                  className="addressInput"
                   type="text"
-                  placeholder="Add a new address"
+                  placeholder="Street Address"
+                  onChange={e => setStreetAddress(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="State"
+                  onChange={e => setState(e.target.value)}
+                />
+                <input
+                  type="text"
+                  placeholder="Zip Code"
+                  onChange={e => setZipcode(e.target.value)}
                 />
                 <input className="submitAddress" type="submit" value="Submit" />
                 <select
