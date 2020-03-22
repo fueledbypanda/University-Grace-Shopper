@@ -89,6 +89,12 @@ app.post('/api/addToCart', (req, res, next)=> {
     .catch( next );
 });
 
+app.post('/api/subtractItem', (req, res, next)=> {
+  db.subtractItem({ userId: req.user.id, productId: req.body.productId })
+    .then( lineItem => res.send(lineItem))
+    .catch( next );
+});
+
 app.delete('/api/removeFromCart/:id', (req, res, next)=> {
   db.removeFromCart({ userId: req.user.id, lineItemId: req.params.id })
     .then( () => res.sendStatus(204))

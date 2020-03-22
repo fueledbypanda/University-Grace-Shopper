@@ -1,4 +1,5 @@
 const client = require('./client');
+const faker = require('faker');
 
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
@@ -11,6 +12,7 @@ const {
   removeFromCart,
   createOrder,
   getLineItems,
+  subtractItem,
 } = require('./userMethods');
 
 const sync = async () => {
@@ -34,6 +36,7 @@ const sync = async () => {
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       name VARCHAR(100) NOT NULL UNIQUE,
       price DECIMAL NOT NULL,
+      image VARCHAR(255) NOT NULL,
       CHECK (char_length(name) > 0)
     );
     CREATE TABLE orders(
@@ -81,24 +84,25 @@ const sync = async () => {
     },
   };
 
-  const _products = {
-    foo: {
-      name: 'foo',
-      price: 2,
-    },
-    bar: {
-      name: 'bar',
-      price: 2,
-    },
-    bazz: {
-      name: 'bazz',
-      price: 2.5,
-    },
-    quq: {
-      name: 'quq',
-      price: 11.99,
-    },
+  const _products = {};
+
+  const makeProductWithFaker = () => {
+    const mockProduct = {
+      name: faker.commerce.productName(),
+      price: faker.commerce.price(),
+      image: faker.image.avatar(),
+    };
+    return mockProduct;
   };
+
+  const makeProductList = () => {
+    for (let i = 0; i < 10; i++) {
+      _products[i] = makeProductWithFaker();
+    }
+  };
+
+  makeProductList();
+
   const [lucy, moe] = await Promise.all(
     Object.values(_users).map(user => users.create(user))
   );
@@ -140,4 +144,5 @@ module.exports = {
   removeFromCart,
   createOrder,
   getLineItems,
+  subtractItem,
 };

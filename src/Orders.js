@@ -77,10 +77,10 @@ const Orders = ({
                   return (
                     <li key={lineItem.id}>
                       <Link
-                        to={`/product/${product.id}`}
+                        to={`/products/${product.id}`}
                         onClick={el => setProductView(product)}
                       >
-                        {product && product.name}
+                        >{product && product.name}
                       </Link>
                       <span className="price">
                         Price: ${parseFloat(product.price, 10)}
