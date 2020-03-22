@@ -12,7 +12,7 @@ const Cart = ({ lineItems, cart, createOrder, removeFromCart, products, setProdu
             const product = products.find( product => product.id === lineItem.productId);
             return (
               <li key={ lineItem.id }>
-                <Link to={`/product/${product.id}`} onClick={(el) => setProductView(product)}>
+                <Link to={`/products/${product.id}`} onClick={(el) => setProductView(product)}>
                   { product && product.name}
                   { ' ' }
                 </Link>
