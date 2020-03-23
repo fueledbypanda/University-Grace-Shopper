@@ -135,9 +135,22 @@ app.get('/api/users/:id', (req, res, next) => {
     .catch(next);
 });
 
+app.get('/api/lineItems/:id', (req, res, next) => {
+  const id = req.params.id;
+  db.models.lineItems
+    .readOne(req.params.id)
+    .then(lineItem => res.send(lineItem))
+    .catch(next);
+});
+
 app.put('/api/users/:id', (req, res, next) => {
   const id = req.params.id;
   db.models.users.update(req.body).then(response => res.send(response));
+});
+
+app.put('/api/lineItems/:id', (req, res, next) => {
+  const id = req.params.id;
+  db.models.lineItems.update(req.body).then(response => res.send(response));
 });
 
 Object.keys(models).forEach(key => {
