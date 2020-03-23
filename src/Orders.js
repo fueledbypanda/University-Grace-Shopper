@@ -88,6 +88,14 @@ const Orders = ({
                     product => product.id === lineItem.productId
                   );
                   totalPrice = totalPrice + product.price * lineItem.quantity;
+                  const [rating, setRating] = useState(undefined);
+                  const handleRating = e => {
+                    setRating(e.target.value);
+                    const lineItemCopy = { ...lineItem };
+                    lineItemCopy.rating = rating;
+
+                    Axios.put(`/api/lineItems/${lineItem.id}`, lineItemCopy);
+                  };
                   return (
                     <li key={lineItem.id}>
                       <Link
@@ -96,6 +104,16 @@ const Orders = ({
                       >
                         {product && product.name}
                       </Link>
+                      <div>
+                        Rating:
+                        <input
+                          type="range"
+                          min="0"
+                          max="5"
+                          onChange={handleRating}
+                        ></input>
+                        {rating}
+                      </div>
                       <span className="price">
                         Price: ${Number(product.price).toFixed(2)}
                       </span>
