@@ -210,6 +210,7 @@ const App = () => {
               products={products}
               setProductView={setProductView}
               user={user}
+              setUser={setUser}
               users={users}
               setUsers={setUsers}
               userAddresses={userAddresses}
