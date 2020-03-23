@@ -7,9 +7,12 @@ const Orders = ({
   orders,
   products,
   setProductView,
-  addresses,
-  setAddresses,
+  addAddress,
+  user,
+  users,
+  setUsers,
   userAddresses,
+  setUserAddresses,
 }) => {
   let totalPrice = 0;
   return (
@@ -21,19 +24,30 @@ const Orders = ({
           const _lineItems = lineItems.filter(
             lineItem => lineItem.orderId === order.id
           );
-          const [streetAddress, setStreetAddress] = useState('');
-          const [state, setState] = useState('');
-          const [zipcode, setZipcode] = useState('');
+          console.log(user);
+          const [selectedAddress, setSelectedAddress] = useState(
+            user.addresses[0]
+          );
+          const userAddressOptions = user.addresses.map((address, i) => (
+            <option key={i}>{address}</option>
+          ));
+          const [newAddress, setNewAddress] = useState('');
+
           const handleSubmit = async e => {
             e.preventDefault();
-            const created = (
-              await Axios.post('/api/addresses/', {
-                streetAddress,
-                state,
-                zipcode,
-              })
+
+            const userCopy = { ...user };
+            userCopy.addresses.unshift(newAddress);
+
+            const usersCopy = [...users];
+            const userIndex = users.indexOf(user);
+
+            const updated = (
+              await Axios.put(`/api/users/${userCopy.id}`, userCopy)
             ).data;
-            setAddresses([...addresses, created]);
+            usersCopy.splice(userIndex, 1, updated);
+            setUsers(usersCopy);
+            setSelectedAddress(newAddress);
           };
 
           return (
@@ -43,58 +57,56 @@ const Orders = ({
               <form className="addressForm" onSubmit={handleSubmit}>
                 <input
                   type="text"
-                  placeholder="Street Address"
-                  onChange={e => setStreetAddress(e.target.value)}
+                  placeholder="Add New Address"
+                  onChange={e => setNewAddress(e.target.value)}
                 />
-                <input
-                  type="text"
-                  placeholder="State"
-                  onChange={e => setState(e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Zip Code"
-                  onChange={e => setZipcode(e.target.value)}
-                />
+
                 <input className="submitAddress" type="submit" value="Submit" />
                 <select
                   className="addressSelect"
                   value="Select an address"
-                  onChange={() => {}}
+                  onChange={e => {
+                    setSelectedAddress(e.target.value);
+                  }}
                 >
                   <option defaultValue disabled>
                     Select an address
                   </option>
+                  {userAddressOptions}
                 </select>
               </form>
-              <span className="address">Shipping Address:</span>
+              <span className="address">
+                Shipping Address: {selectedAddress}
+              </span>
               <ul>
                 {_lineItems.map(lineItem => {
                   const product = products.find(
                     product => product.id === lineItem.productId
                   );
-                  totalPrice += parseFloat(product.price, 10);
+                  totalPrice = totalPrice + product.price * lineItem.quantity;
                   return (
                     <li key={lineItem.id}>
                       <Link
                         to={`/products/${product.id}`}
                         onClick={el => setProductView(product)}
                       >
-                        >{product && product.name}
+                        {product && product.name}
                       </Link>
                       <span className="price">
-                        Price: ${parseFloat(product.price, 10)}
+                        Price: ${Number(product.price).toFixed(2)}
                       </span>
                       <span className="quantity">
                         Quantity: {lineItem.quantity} ($
-                        {parseFloat(product.price, 10) * lineItem.quantity})
+                        {Number(product.price * lineItem.quantity).toFixed(2)})
                       </span>
-                      <span className="subTotal">Subtotal: ${totalPrice}</span>
+                      <span className="subTotal">
+                        Subtotal: ${Number(totalPrice).toFixed(2)}
+                      </span>
                     </li>
                   );
                 })}
               </ul>
-              Total: ${totalPrice}
+              Total: ${Number(totalPrice).toFixed(2)}
             </li>
           );
         })}

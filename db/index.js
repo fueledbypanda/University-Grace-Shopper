@@ -19,16 +19,16 @@ const sync = async () => {
   const SQL = `
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
     DROP TABLE IF EXISTS "lineItems";
-    DROP TABLE IF EXISTS user_addresses;
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users;
     DROP TABLE IF EXISTS products;
-    DROP TABLE IF EXISTS addresses;
+
     CREATE TABLE users(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       username VARCHAR(100) NOT NULL UNIQUE,
       password VARCHAR(100) NOT NULL,
       role VARCHAR(20) DEFAULT 'USER',
+      addresses text[],
       CHECK (char_length(username) > 0)
     );
 
@@ -51,17 +51,7 @@ const sync = async () => {
       "productId" UUID REFERENCES products(id) NOT NULL,
       quantity INTEGER DEFAULT 1
     );
-    CREATE TABLE addresses(
-      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-      "streetAddress" VARCHAR(100) UNIQUE NOT NULL,
-      state VARCHAR(2) NOT NULL,
-      zipcode VARCHAR(5) NOT NULL
-    );
-    CREATE TABLE user_addresses(
-      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-      "userId" UUID REFERENCES users(id) NOT NULL,
-      "addressId" UUID REFERENCES addresses(id) NOT NULL
-    )
+
   `;
 
   await client.query(SQL);

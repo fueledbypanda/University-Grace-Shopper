@@ -26,11 +26,15 @@ const App = () => {
   const [products, setProducts] = useState([]);
   const [lineItems, setLineItems] = useState([]);
   const [productView, setProductView] = useState([]);
-  const [addresses, setAddresses] = useState([]);
-  const [userAddresses, setUserAddresses] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     axios.get('/api/products').then(response => setProducts(response.data));
+  }, []);
+
+  useEffect(() => {
+    axios.get('/api/users').then(response => setUsers(response.data));
   }, []);
 
   useEffect(() => {
@@ -39,6 +43,13 @@ const App = () => {
       axios.get('/api/getLineItems', headers()).then(response => {
         setLineItems(response.data);
       });
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.id) {
+      const currentUser = users.find(user => user.id === auth.id);
+      setUser(currentUser);
     }
   }, [auth]);
 
@@ -57,15 +68,6 @@ const App = () => {
       });
     }
   }, [auth]);
-
-  useEffect(() => {
-    axios.get('/api/addresses').then(response => setAddresses(response.data));
-  }, []);
-  useEffect(() => {
-    axios
-      .get('/api/user_addresses')
-      .then(response => setUserAddresses(response.data));
-  }, []);
 
   const login = async credentials => {
     const token = (await axios.post('/api/auth', credentials)).data.token;
@@ -149,6 +151,8 @@ const App = () => {
     });
   };
 
+  const [userAddresses, setUserAddresses] = useState([]);
+
   return (
     <Router>
       <div>
@@ -205,9 +209,11 @@ const App = () => {
               cart={cart}
               products={products}
               setProductView={setProductView}
-              addresses={addresses}
-              setAddresses={setAddresses}
+              user={user}
+              users={users}
+              setUsers={setUsers}
               userAddresses={userAddresses}
+              setUserAddresses={setUserAddresses}
             />
           </Route>
           <Route exact path="/products">
