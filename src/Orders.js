@@ -22,7 +22,7 @@ const Orders = ({
   const userIndex = users.indexOf(user);
   let [addresses, setAddresses] = useState(userCopy.addresses);
   return (
-    <div>
+    <div id="orders">
       <h2>Orders</h2>
       <ul>
         {orders.map(order => {
@@ -80,9 +80,9 @@ const Orders = ({
                 </select>
               </form>
               <span className="address">
-                Shipping Address: {selectedAddress}
+                <h3>Shipping Address: {selectedAddress}</h3>
               </span>
-              <ul>
+              <ul className>
                 {_lineItems.map(lineItem => {
                   const product = products.find(
                     product => product.id === lineItem.productId

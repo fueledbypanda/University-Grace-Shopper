@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
-import ProductPage from "./ProductPage";
+import React, { useState } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import ProductPage from './ProductPage';
 
 const Products = ({ products, addToCart, setProductView }) => {
   return (
-    <div>
+    <div id="products">
       <h2>Products</h2>
-      <ul>
+      <ul id="productsList">
         {products.map(product => {
           return (
             <li key={product.id}>
