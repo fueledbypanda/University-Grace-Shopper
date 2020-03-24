@@ -13,7 +13,8 @@ const Cart = ({
 }) => {
   return (
     <div id="cart">
-      <h2>Cart - {cart.id && cart.id.slice(0, 4)}</h2>
+      <h1>Cart</h1>
+      ID: {cart.id && cart.id.slice(0, 4)}
       <button
         disabled={!lineItems.find(lineItem => lineItem.orderId === cart.id)}
         onClick={createOrder}

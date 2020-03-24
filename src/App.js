@@ -155,24 +155,23 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li>
-              <Link to="/cart">Cart</Link>
-            </li>
-            <li>
-              <Link to="/orders">Orders</Link>
-            </li>
-            <li>
-              <Link to="/products">View All Products</Link>
-            </li>
-          </ul>
-        </nav>
-
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/products">Products</Link>
+          </li>
+          <li>
+            <Link to="/cart">Cart</Link>
+          </li>
+          <li>
+            <Link to="/orders">Orders</Link>
+          </li>
+        </ul>
+      </nav>
+      <div id="app">
         <Switch>
           <Route exact path="/">
             <Home
