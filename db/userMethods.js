@@ -107,6 +107,18 @@ const getLineItems = async userId => {
   return (await client.query(SQL, [userId])).rows;
 };
 
+const addToSave = async(userId, productId) => {
+  const sql = `INSERT INTO saves("userId", "productId") VALUES($1, $2) returning *`
+  const response = await client.query(sql, [userId, productId])
+  return response.rows[0]
+}
+
+const getSaves = async(userId) => {
+  const sql = `SELECT * FROM saves WHERE "userId" = $1 returning *`
+  const response = await client.query(sql, [userId])
+  return response.rows
+}
+
 module.exports = {
   getCart,
   getOrders,
@@ -115,4 +127,6 @@ module.exports = {
   createOrder,
   getLineItems,
   subtractItem,
+  addToSave,
+  getSaves
 };

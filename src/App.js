@@ -6,8 +6,14 @@ import Cart from './Cart';
 import Home from './Home';
 import Products from './Products';
 
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from 'react-router-dom';
 import ProductPage from './ProductPage';
+import Saved from './Saved';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -25,16 +31,11 @@ const App = () => {
   const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
   const [lineItems, setLineItems] = useState([]);
-  const [productView, setProductView] = useState([]);
-  const [users, setUsers] = useState([]);
-  const [user, setUser] = useState({});
+  const [productView, setProductView] = useState([])
+  const [saved, setSaved] = useState([])
 
   useEffect(() => {
     axios.get('/api/products').then(response => setProducts(response.data));
-  }, []);
-
-  useEffect(() => {
-    axios.get('/api/users').then(response => setUsers(response.data));
   }, []);
 
   useEffect(() => {
@@ -43,13 +44,6 @@ const App = () => {
       axios.get('/api/getLineItems', headers()).then(response => {
         setLineItems(response.data);
       });
-    }
-  }, [auth]);
-
-  useEffect(() => {
-    if (auth.id) {
-      const currentUser = users.find(user => user.id === auth.id);
-      setUser(currentUser);
     }
   }, [auth]);
 
@@ -95,6 +89,13 @@ const App = () => {
     });
   }, []);
 
+  useEffect(() => {
+    if(auth.id) {
+      axios.get('/api/saves')
+        .then(response => setSaved(response.data))
+    }
+  }, [auth])
+
   const createOrder = () => {
     const token = window.localStorage.getItem('token');
     axios
@@ -123,27 +124,21 @@ const App = () => {
       }
     });
   };
-
-  const subtractFromCart = (productId, lineItem) => {
-    if (lineItem.quantity > 1) {
-      axios
-        .post('/api/subtractItem', { productId }, headers())
-        .then(response => {
-          const lineItem = response.data;
-          const updated = lineItems.map(item => {
-            if (item.id === lineItem.id) {
-              item.quantity -= 1;
-              return item;
-            }
-            return item;
-          });
-
-          setLineItems(updated);
-        });
-    } else {
-      removeFromCart(lineItem.id);
+  
+  const save = (productId) => {
+    const found = saved.find(item => item.productId === productId)
+    if(found === undefined) {
+      axios.post('/api/saves', { productId }, headers()).then(response => {
+        setSaved([...saved, response.data])
+      })
     }
-  };
+  }
+
+  const unsave = (saveId) => {
+    axios.delete(`/api/saves/${saveId}`).then(() => {
+      setSaved(saved.filter(_saved => _saved.id !== saveId))
+    })
+  }
 
   const removeFromCart = lineItemId => {
     axios.delete(`/api/removeFromCart/${lineItemId}`, headers()).then(() => {
@@ -151,7 +146,6 @@ const App = () => {
     });
   };
 
-  const [userAddresses, setUserAddresses] = useState([]);
 
   return (
     <Router>
@@ -169,6 +163,9 @@ const App = () => {
             </li>
             <li>
               <Link to="/products">View All Products</Link>
+            </li>
+            <li>
+              <Link to="/saved">Saved</Link>
             </li>
           </ul>
         </nav>
@@ -198,8 +195,7 @@ const App = () => {
               createOrder={createOrder}
               products={products}
               setProductView={setProductView}
-              subtractFromCart={subtractFromCart}
-              addToCart={addToCart}
+              save={save}
             />
           </Route>
           <Route exact path="/orders">
@@ -209,24 +205,16 @@ const App = () => {
               cart={cart}
               products={products}
               setProductView={setProductView}
-              user={user}
-              setUser={setUser}
-              users={users}
-              setUsers={setUsers}
-              userAddresses={userAddresses}
-              setUserAddresses={setUserAddresses}
             />
           </Route>
           <Route exact path="/products">
-            <Products
-              addToCart={addToCart}
-              products={products}
-              productView={productView}
-              setProductView={setProductView}
-            />
+            <Products addToCart={ addToCart } products={ products } setProductView={setProductView} save={save}/>
           </Route>
           <Route exact path={`/products/${productView.id}`}>
-            <ProductPage product={productView} addToCart={addToCart} />
+            <ProductPage product={productView} addToCart={addToCart}/>
+          </Route>
+          <Route exact path="/saved">
+            <Saved addToCart={addToCart} saved={saved} products={products} userId={auth.id} unsave={unsave}/>
           </Route>
         </Switch>
       </div>

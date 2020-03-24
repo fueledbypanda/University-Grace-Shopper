@@ -10,6 +10,7 @@ const Cart = ({
   setProductView,
   subtractFromCart,
   addToCart,
+  save
 }) => {
   return (
     <div id="cart">
@@ -49,6 +50,12 @@ const Cart = ({
                 </span>
                 <button onClick={() => removeFromCart(lineItem.id)}>
                   Remove From Cart
+                </button>
+                <button onClick={()=>{
+                  removeFromCart(lineItem.id)
+                  save(product.id)
+                }}>
+                  Save for Later
                 </button>
               </li>
             );
