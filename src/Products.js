@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import ProductPage from './ProductPage';
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-const Products = ({ products, addToCart, setProductView }) => {
+const Products = ({ products, addToCart, setProductView, save }) => {
   return (
     <div id="products">
       <h2>Products</h2>
@@ -11,7 +10,7 @@ const Products = ({ products, addToCart, setProductView }) => {
           return (
             <li key={product.id}>
               <Link
-                to={`/product/${product.id}`}
+                to={`/products/${product.id}`}
                 onClick={el => setProductView(product)}
               >
                 <div>{product.name}</div>
@@ -19,6 +18,7 @@ const Products = ({ products, addToCart, setProductView }) => {
                 <div>${Number(product.price).toFixed(2)}</div>
               </Link>
               <button onClick={() => addToCart(product.id)}>Add to Cart</button>
+              <button onClick={()=> save(product.id)}>Save For Later</button>
             </li>
           );
         })}

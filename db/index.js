@@ -13,6 +13,8 @@ const {
   createOrder,
   getLineItems,
   subtractItem,
+  getSaves,
+  addToSave
 } = require('./userMethods');
 
 const sync = async () => {
@@ -21,8 +23,10 @@ const sync = async () => {
 
     DROP TABLE IF EXISTS "lineItems";
     DROP TABLE IF EXISTS orders;
-    DROP TABLE IF EXISTS users;
-    DROP TABLE IF EXISTS products;
+    DROP TABLE IF EXISTS users cascade;
+    DROP TABLE IF EXISTS products cascade;
+    DROP TABLE IF EXISTS saves;
+
 
     CREATE TABLE users(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -53,8 +57,11 @@ const sync = async () => {
       quantity INTEGER DEFAULT 1,
       rating INTEGER
     );
-
-
+    CREATE TABLE saves(
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      "userId" UUID REFERENCES users(id) NOT NULL,
+      "productId" UUID REFERENCES products(id) NOT NULL
+    );
   `;
 
   await client.query(SQL);
@@ -138,4 +145,6 @@ module.exports = {
   createOrder,
   getLineItems,
   subtractItem,
+  getSaves,
+  addToSave
 };
