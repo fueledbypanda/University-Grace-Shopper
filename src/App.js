@@ -14,6 +14,7 @@ import {
 } from 'react-router-dom';
 import ProductPage from './ProductPage';
 import Saved from './Saved';
+import Admin from './Admin';
 
 const headers = () => {
   const token = window.localStorage.getItem('token');
@@ -33,6 +34,7 @@ const App = () => {
   const [lineItems, setLineItems] = useState([]);
   const [productView, setProductView] = useState([])
   const [saved, setSaved] = useState([])
+  const [promos, setPromos] = useState([])
 
   useEffect(() => {
     axios.get('/api/products').then(response => setProducts(response.data));
@@ -96,6 +98,14 @@ const App = () => {
     }
   }, [auth])
 
+  useEffect(() => {
+    if(auth.id) {
+      axios.get('/api/promos')
+        .then(response => setPromos(response.data))
+    }
+  }, [auth])
+
+
   const createOrder = () => {
     const token = window.localStorage.getItem('token');
     axios
@@ -146,6 +156,18 @@ const App = () => {
     });
   };
 
+  const createPromo = (code, discount) => {
+    axios.post('/api/promos', {code: code, discount: discount}).then((response) => {
+      setPromos([...promos, response.data])
+    })
+  }
+
+  const deletePromo = (id) => {
+    axios.delete(`/api/promos/${id}`)
+    .then(()=>{
+      setPromos(promos.filter(item => item.id !== id))
+    })
+  }
 
   return (
     <Router>
@@ -167,6 +189,7 @@ const App = () => {
             <li>
               <Link to="/saved">Saved</Link>
             </li>
+            {auth.role === "ADMIN" ? <li><Link to="/admin">Admin</Link></li> : null}
           </ul>
         </nav>
 
@@ -216,6 +239,13 @@ const App = () => {
           <Route exact path="/saved">
             <Saved addToCart={addToCart} saved={saved} products={products} userId={auth.id} unsave={unsave}/>
           </Route>
+          {
+            auth.role === "ADMIN" ? 
+              <Route exact path="/admin">
+                <Admin user={auth} createPromo={createPromo} promos={promos} deletePromo={deletePromo}/>
+              </Route> 
+            : null
+          }
         </Switch>
       </div>
     </Router>

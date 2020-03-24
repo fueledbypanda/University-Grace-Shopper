@@ -26,7 +26,7 @@ const sync = async () => {
     DROP TABLE IF EXISTS users cascade;
     DROP TABLE IF EXISTS products cascade;
     DROP TABLE IF EXISTS saves;
-
+    DROP TABLE IF EXISTS promos;
 
     CREATE TABLE users(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -34,9 +34,9 @@ const sync = async () => {
       password VARCHAR(100) NOT NULL,
       role VARCHAR(20) DEFAULT 'USER',
       addresses text[],
+      usedPromos text[],
       CHECK (char_length(username) > 0)
     );
-
     CREATE TABLE products(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       name VARCHAR(100) NOT NULL UNIQUE,
@@ -61,6 +61,11 @@ const sync = async () => {
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       "userId" UUID REFERENCES users(id) NOT NULL,
       "productId" UUID REFERENCES products(id) NOT NULL
+    );
+    CREATE TABLE promos(
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      code VARCHAR NOT NULL UNIQUE,
+      discount INT NOT NULL
     );
   `;
 
