@@ -23,7 +23,7 @@ const Orders = ({
   let [addresses, setAddresses] = useState(userCopy.addresses);
   return (
     <div id="orders">
-      <h2>Orders</h2>
+      <h1>Orders</h1>
       <ul>
         {orders.map(order => {
           totalPrice = 0;
@@ -53,9 +53,13 @@ const Orders = ({
 
           return (
             <li key={order.id}>
-              <div>OrderID: {order.id.slice(0, 4)}</div>
+              <div>
+                <h3>OrderID: {order.id.slice(0, 4)}</h3>
+              </div>
               <span className="orderDate">
-                Order Date: {moment(order.createdAt).format('MM/DD/YYYY')}
+                <h3>
+                  Order Date: {moment(order.createdAt).format('MM/DD/YYYY')}
+                </h3>
               </span>
               <form className="addressForm" onSubmit={handleSubmit}>
                 <input
@@ -102,18 +106,11 @@ const Orders = ({
                         to={`/products/${product.id}`}
                         onClick={el => setProductView(product)}
                       >
+                        {' '}
+                        <img src={product.image} />
                         {product && product.name}
                       </Link>
-                      <div>
-                        Rating:
-                        <input
-                          type="range"
-                          min="0"
-                          max="5"
-                          onChange={handleRating}
-                        ></input>
-                        {rating}
-                      </div>
+
                       <span className="price">
                         Price: ${Number(product.price).toFixed(2)}
                       </span>
@@ -124,11 +121,21 @@ const Orders = ({
                       <span className="subTotal">
                         Subtotal: ${Number(totalPrice).toFixed(2)}
                       </span>
+                      <div>
+                        Rating:
+                        <input
+                          type="range"
+                          min="0"
+                          max="5"
+                          onChange={handleRating}
+                        ></input>
+                        {rating}
+                      </div>
                     </li>
                   );
                 })}
               </ul>
-              Total: ${Number(totalPrice).toFixed(2)}
+              <h2>Total: ${Number(totalPrice).toFixed(2)}</h2>
             </li>
           );
         })}
