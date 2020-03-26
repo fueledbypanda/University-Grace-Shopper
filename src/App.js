@@ -6,12 +6,7 @@ import Cart from './Cart';
 import Home from './Home';
 import Products from './Products';
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from 'react-router-dom';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ProductPage from './ProductPage';
 import Saved from './Saved';
 import Admin from './Admin';
@@ -32,9 +27,22 @@ const App = () => {
   const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
   const [lineItems, setLineItems] = useState([]);
-  const [productView, setProductView] = useState([])
-  const [saved, setSaved] = useState([])
-  const [promos, setPromos] = useState([])
+  const [productView, setProductView] = useState([]);
+  const [saved, setSaved] = useState([]);
+  const [promos, setPromos] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    axios.get('/api/users').then(response => setUsers(response.data));
+  }, []);
+
+  useEffect(() => {
+    if (auth.id) {
+      const currentUser = users.find(user => user.id === auth.id);
+      setUser(currentUser);
+    }
+  }, [auth]);
 
   useEffect(() => {
     axios.get('/api/products').then(response => setProducts(response.data));
@@ -92,19 +100,16 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    if(auth.id) {
-      axios.get('/api/saves')
-        .then(response => setSaved(response.data))
+    if (auth.id) {
+      axios.get('/api/saves').then(response => setSaved(response.data));
     }
-  }, [auth])
+  }, [auth]);
 
   useEffect(() => {
-    if(auth.id) {
-      axios.get('/api/promos')
-        .then(response => setPromos(response.data))
+    if (auth.id) {
+      axios.get('/api/promos').then(response => setPromos(response.data));
     }
-  }, [auth])
-
+  }, [auth]);
 
   const createOrder = () => {
     const token = window.localStorage.getItem('token');
@@ -134,21 +139,21 @@ const App = () => {
       }
     });
   };
-  
-  const save = (productId) => {
-    const found = saved.find(item => item.productId === productId)
-    if(found === undefined) {
-      axios.post('/api/saves', { productId }, headers()).then(response => {
-        setSaved([...saved, response.data])
-      })
-    }
-  }
 
-  const unsave = (saveId) => {
+  const save = productId => {
+    const found = saved.find(item => item.productId === productId);
+    if (found === undefined) {
+      axios.post('/api/saves', { productId }, headers()).then(response => {
+        setSaved([...saved, response.data]);
+      });
+    }
+  };
+
+  const unsave = saveId => {
     axios.delete(`/api/saves/${saveId}`).then(() => {
-      setSaved(saved.filter(_saved => _saved.id !== saveId))
-    })
-  }
+      setSaved(saved.filter(_saved => _saved.id !== saveId));
+    });
+  };
 
   const removeFromCart = lineItemId => {
     axios.delete(`/api/removeFromCart/${lineItemId}`, headers()).then(() => {
@@ -157,17 +162,18 @@ const App = () => {
   };
 
   const createPromo = (code, discount) => {
-    axios.post('/api/promos', {code: code, discount: discount}).then((response) => {
-      setPromos([...promos, response.data])
-    })
-  }
+    axios
+      .post('/api/promos', { code: code, discount: discount })
+      .then(response => {
+        setPromos([...promos, response.data]);
+      });
+  };
 
-  const deletePromo = (id) => {
-    axios.delete(`/api/promos/${id}`)
-    .then(()=>{
-      setPromos(promos.filter(item => item.id !== id))
-    })
-  }
+  const deletePromo = id => {
+    axios.delete(`/api/promos/${id}`).then(() => {
+      setPromos(promos.filter(item => item.id !== id));
+    });
+  };
 
   return (
     <Router>
@@ -189,7 +195,11 @@ const App = () => {
             <li>
               <Link to="/saved">Saved</Link>
             </li>
-            {auth.role === "ADMIN" ? <li><Link to="/admin">Admin</Link></li> : null}
+            {auth.role === 'ADMIN' ? (
+              <li>
+                <Link to="/admin">Admin</Link>
+              </li>
+            ) : null}
           </ul>
         </nav>
 
@@ -228,24 +238,42 @@ const App = () => {
               cart={cart}
               products={products}
               setProductView={setProductView}
+              user={user}
+              setUser={setUser}
+              users={users}
+              setUsers={setUsers}
             />
           </Route>
           <Route exact path="/products">
-            <Products addToCart={ addToCart } products={ products } setProductView={setProductView} save={save}/>
+            <Products
+              addToCart={addToCart}
+              products={products}
+              setProductView={setProductView}
+              save={save}
+            />
           </Route>
           <Route exact path={`/products/${productView.id}`}>
-            <ProductPage product={productView} addToCart={addToCart}/>
+            <ProductPage product={productView} addToCart={addToCart} />
           </Route>
           <Route exact path="/saved">
-            <Saved addToCart={addToCart} saved={saved} products={products} userId={auth.id} unsave={unsave}/>
+            <Saved
+              addToCart={addToCart}
+              saved={saved}
+              products={products}
+              userId={auth.id}
+              unsave={unsave}
+            />
           </Route>
-          {
-            auth.role === "ADMIN" ? 
-              <Route exact path="/admin">
-                <Admin user={auth} createPromo={createPromo} promos={promos} deletePromo={deletePromo}/>
-              </Route> 
-            : null
-          }
+          {auth.role === 'ADMIN' ? (
+            <Route exact path="/admin">
+              <Admin
+                user={auth}
+                createPromo={createPromo}
+                promos={promos}
+                deletePromo={deletePromo}
+              />
+            </Route>
+          ) : null}
         </Switch>
       </div>
     </Router>

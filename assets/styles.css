@@ -1,15 +1,26 @@
 html {
   background-image: url('https://aquarianspirals.files.wordpress.com/2014/08/ocean-beach-wave-background-hd-wallpaper-desktop.jpg');
-  background-size: cover;
+  background-size: auto;
 }
 
 body {
-  font-family: sans-serif;
+  font-family: 'Oxanium';
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
 }
 
-input,
-button {
-  padding: 0.5rem;
+#app {
+  display: flex;
+  justify-content: center;
+
+  background-color: rgba(255, 255, 255, 0.667);
+  margin: 0 10vw 0 10vw;
+  height: 100vw;
+}
+
+.addressForm {
+  width: 70%;
 }
 
 form {
@@ -61,90 +72,204 @@ button {
   border: none;
   color: white;
   border-radius: 10px;
+  font-size: 16px;
+  font-family: 'Righteous';
 }
 
 nav {
   background-color: rgba(0, 0, 0, 0.859);
-  padding: 8px;
+
+  width: 100vw;
 }
 
 nav a {
   color: white;
   text-decoration: none;
+  font-size: 24px;
+  font-family: 'Righteous';
 }
 
 nav ul {
   display: flex;
   justify-content: space-around;
+  margin: 0;
+}
+
+#productPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px;
+}
+
+#cart img {
+  height: 75px;
+  width: 75px;
+}
+
+#orders img {
+  width: 50px;
+  height: 50px;
+}
+
+#productPage img {
+  width: 300px;
+  height: 300px;
 }
 
 #products {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.667);
-
-  padding: 16px;
+  text-align: center;
+  padding: 32px;
 }
 
 #productsList {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  height: 70vh;
+  overflow: scroll;
 }
-#productList > li {
+#productsList > li {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-#productlist a {
-  flex: 1;
+  padding: 16px;
+  text-align: center;
 }
 
 #cart {
   text-align: center;
   display: flex;
   flex-direction: column;
-  background-color: rgba(255, 255, 255, 0.667);
+  width: 100%;
+  padding: 32px;
+  align-items: center;
 }
 
-#cart ul {
-  display: flex;
-  justify-content: space-around;
+#products li {
+  width: 20%;
+
+  justify-content: flex-end;
 }
 
-#cart li {
+a > div {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 16px;
 }
 
+#products img {
+  border: 7px solid red;
+  box-shadow: 2px 2px 5px 1px rgba(0, 0, 0, 0.516);
+}
+
+#products a {
+  font-family: 'Righteous';
+  text-decoration: none;
+  color: teal;
+  font-size: 16px;
+}
+
+#orders a {
+  text-decoration: none;
+  color: teal;
+  font-family: 'Righteous';
+  font-size: 16px;
+}
+
 #cart a {
-  overflow-wrap: break-word;
+  text-decoration: none;
+  color: teal;
+  font-size: 16px;
+  font-family: 'Righteous';
+}
+
+li > a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px;
+}
+
+#cart ul {
+  display: flex;
+  flex-direction: column;
+  height: 65vh;
+  overflow: scroll;
+  width: 100%;
+}
+
+#cart li {
+  display: flex;
+  width: 95%;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+}
+#login {
+  width: 100%;
+  border: none;
+  padding: 16 25vw 0 25vw;
 }
 
 h2 {
   text-align: center;
+
+  font-family: 'Righteous';
 }
 h1 {
   text-align: center;
+  font-family: 'Righteous';
 }
 
 #home {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.667);
 
-  padding: 16px;
+  padding: 32px;
 }
 
 #orders {
-  background-color: rgba(255, 255, 255, 0.667);
+  padding: 32px;
+  width: 100%;
+}
+#orders > ul {
+  overflow: scroll;
+  width: 100%;
+  height: 75vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  padding: 16px;
+#orders > ul > li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+#orders > ul > li > ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#orders ul li ul li {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+img {
+  border-radius: 50%;
 }
 
 #admin {
