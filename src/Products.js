@@ -1,10 +1,10 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const Products = ({ products, addToCart, setProductView, save, lowerInventory }) => {
   return (
     <div id="products">
-      <h2>Products</h2>
+      <h1>Products</h1>
       <ul id="productsList">
         {products.map(product => {
           return (
@@ -31,6 +31,7 @@ const Products = ({ products, addToCart, setProductView, save, lowerInventory })
                 lowerInventory(product.id)
               }}>Add to Cart</button>
               <button onClick={()=> save(product.id)}>Save For Later</button>
+
             </li>
           );
         })}
