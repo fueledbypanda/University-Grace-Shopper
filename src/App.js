@@ -177,32 +177,31 @@ const App = () => {
 
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
+      <nav>
+        <ul>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
+          <li>
+            <Link to="/cart">Cart</Link>
+          </li>
+          <li>
+            <Link to="/orders">Orders</Link>
+          </li>
+          <li>
+            <Link to="/products">View All Products</Link>
+          </li>
+          <li>
+            <Link to="/saved">Saved</Link>
+          </li>
+          {auth.role === 'ADMIN' ? (
             <li>
-              <Link to="/">Home</Link>
+              <Link to="/admin">Admin</Link>
             </li>
-            <li>
-              <Link to="/cart">Cart</Link>
-            </li>
-            <li>
-              <Link to="/orders">Orders</Link>
-            </li>
-            <li>
-              <Link to="/products">View All Products</Link>
-            </li>
-            <li>
-              <Link to="/saved">Saved</Link>
-            </li>
-            {auth.role === 'ADMIN' ? (
-              <li>
-                <Link to="/admin">Admin</Link>
-              </li>
-            ) : null}
-          </ul>
-        </nav>
-
+          ) : null}
+        </ul>
+      </nav>
+      <div id="app">
         <Switch>
           <Route exact path="/">
             <Home
