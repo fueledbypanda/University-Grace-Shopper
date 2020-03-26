@@ -27,9 +27,22 @@ const App = () => {
   const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
   const [lineItems, setLineItems] = useState([]);
-  const [productView, setProductView] = useState([])
-  const [saved, setSaved] = useState([])
-  const [promos, setPromos] = useState([])
+  const [productView, setProductView] = useState([]);
+  const [saved, setSaved] = useState([]);
+  const [promos, setPromos] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    axios.get('/api/users').then(response => setUsers(response.data));
+  }, []);
+
+  useEffect(() => {
+    if (auth.id) {
+      const currentUser = users.find(user => user.id === auth.id);
+      setUser(currentUser);
+    }
+  }, [auth]);
 
   useEffect(() => {
     axios.get('/api/products').then(response => setProducts(response.data));
@@ -93,12 +106,10 @@ const App = () => {
   }, [auth]);
 
   useEffect(() => {
-    if(auth.id) {
-      axios.get('/api/promos')
-        .then(response => setPromos(response.data))
+    if (auth.id) {
+      axios.get('/api/promos').then(response => setPromos(response.data));
     }
-  }, [auth])
-
+  }, [auth]);
 
   const createOrder = () => {
     const token = window.localStorage.getItem('token');
@@ -150,39 +161,19 @@ const App = () => {
     });
   };
 
-<<<<<<< HEAD
-  return (
-    <Router>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/products">Products</Link>
-          </li>
-          <li>
-            <Link to="/cart">Cart</Link>
-          </li>
-          <li>
-            <Link to="/orders">Orders</Link>
-          </li>
-        </ul>
-      </nav>
-      <div id="app">
-=======
   const createPromo = (code, discount) => {
-    axios.post('/api/promos', {code: code, discount: discount}).then((response) => {
-      setPromos([...promos, response.data])
-    })
-  }
+    axios
+      .post('/api/promos', { code: code, discount: discount })
+      .then(response => {
+        setPromos([...promos, response.data]);
+      });
+  };
 
-  const deletePromo = (id) => {
-    axios.delete(`/api/promos/${id}`)
-    .then(()=>{
-      setPromos(promos.filter(item => item.id !== id))
-    })
-  }
+  const deletePromo = id => {
+    axios.delete(`/api/promos/${id}`).then(() => {
+      setPromos(promos.filter(item => item.id !== id));
+    });
+  };
 
   return (
     <Router>
@@ -204,11 +195,14 @@ const App = () => {
             <li>
               <Link to="/saved">Saved</Link>
             </li>
-            {auth.role === "ADMIN" ? <li><Link to="/admin">Admin</Link></li> : null}
+            {auth.role === 'ADMIN' ? (
+              <li>
+                <Link to="/admin">Admin</Link>
+              </li>
+            ) : null}
           </ul>
         </nav>
 
->>>>>>> bb8f3af78da474730d28f59038807e37ee445b1b
         <Switch>
           <Route exact path="/">
             <Home
@@ -244,6 +238,10 @@ const App = () => {
               cart={cart}
               products={products}
               setProductView={setProductView}
+              user={user}
+              setUser={setUser}
+              users={users}
+              setUsers={setUsers}
             />
           </Route>
           <Route exact path="/products">
@@ -266,13 +264,16 @@ const App = () => {
               unsave={unsave}
             />
           </Route>
-          {
-            auth.role === "ADMIN" ?
-              <Route exact path="/admin">
-                <Admin user={auth} createPromo={createPromo} promos={promos} deletePromo={deletePromo}/>
-              </Route>
-            : null
-          }
+          {auth.role === 'ADMIN' ? (
+            <Route exact path="/admin">
+              <Admin
+                user={auth}
+                createPromo={createPromo}
+                promos={promos}
+                deletePromo={deletePromo}
+              />
+            </Route>
+          ) : null}
         </Switch>
       </div>
     </Router>
