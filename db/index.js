@@ -1,9 +1,9 @@
-const client = require('./client');
-const faker = require('faker');
+const client = require("./client");
+const faker = require("faker");
 
-const { authenticate, compare, findUserFromToken, hash } = require('./auth');
+const { authenticate, compare, findUserFromToken, hash } = require("./auth");
 
-const models = ({ products, users, orders, lineItems } = require('./models'));
+const models = ({ products, users, orders, lineItems } = require("./models"));
 
 const {
   getCart,
@@ -15,7 +15,7 @@ const {
   subtractItem,
   getSaves,
   addToSave
-} = require('./userMethods');
+} = require("./userMethods");
 
 const sync = async () => {
   const SQL = `
@@ -42,6 +42,9 @@ const sync = async () => {
       name VARCHAR(100) NOT NULL UNIQUE,
       price DECIMAL NOT NULL,
       image VARCHAR(255) NOT NULL,
+      department VARCHAR(255) NOT NULL,
+      material VARCHAR(255) NOT NULL,
+      adjective VARCHAR(255) NOT NULL,
       CHECK (char_length(name) > 0)
     );
     CREATE TABLE orders(
@@ -68,20 +71,20 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      username: 'lucy',
-      password: 'LUCY',
-      role: 'ADMIN',
+      username: "lucy",
+      password: "LUCY",
+      role: "ADMIN"
     },
     moe: {
-      username: 'moe',
-      password: 'MOE',
-      role: null,
+      username: "moe",
+      password: "MOE",
+      role: null
     },
     curly: {
-      username: 'larry',
-      password: 'LARRY',
-      role: null,
-    },
+      username: "larry",
+      password: "LARRY",
+      role: null
+    }
   };
 
   const _products = {};
@@ -91,6 +94,9 @@ const sync = async () => {
       name: faker.commerce.productName(),
       price: faker.commerce.price(),
       image: faker.image.avatar(),
+      department: faker.commerce.department(),
+      material: faker.commerce.productMaterial(),
+      adjective: faker.commerce.productAdjective()
     };
     return mockProduct;
   };
@@ -106,17 +112,17 @@ const sync = async () => {
   const [lucy, moe] = await Promise.all(
     Object.values(_users).map(user => users.create(user))
   );
-  const [foo, bar, bazz] = await Promise.all(
+  const [foo, bar, bazz, doo, dar, dazz] = await Promise.all(
     Object.values(_products).map(product => products.create(product))
   );
 
   const _orders = {
     moe: {
-      userId: moe.id,
+      userId: moe.id
     },
     lucy: {
-      userId: lucy.id,
-    },
+      userId: lucy.id
+    }
   };
 
   const userMap = (await users.read()).reduce((acc, user) => {
@@ -129,7 +135,7 @@ const sync = async () => {
   }, {});
   return {
     users: userMap,
-    products: productMap,
+    products: productMap
   };
 };
 

@@ -1,26 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import qs from 'qs';
-import axios from 'axios';
-import Orders from './Orders';
-import Cart from './Cart';
-import Home from './Home';
-import Products from './Products';
+import React, { useState, useEffect } from "react";
+import qs from "qs";
+import axios from "axios";
+import Orders from "./Orders";
+import Cart from "./Cart";
+import Home from "./Home";
+import Products from "./Products";
 
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from 'react-router-dom';
-import ProductPage from './ProductPage';
-import Saved from './Saved';
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import ProductPage from "./ProductPage";
+import Saved from "./Saved";
 
 const headers = () => {
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem("token");
   return {
     headers: {
-      authorization: token,
-    },
+      authorization: token
+    }
   };
 };
 
@@ -31,17 +26,17 @@ const App = () => {
   const [cart, setCart] = useState({});
   const [products, setProducts] = useState([]);
   const [lineItems, setLineItems] = useState([]);
-  const [productView, setProductView] = useState([])
-  const [saved, setSaved] = useState([])
+  const [productView, setProductView] = useState([]);
+  const [saved, setSaved] = useState([]);
 
   useEffect(() => {
-    axios.get('/api/products').then(response => setProducts(response.data));
+    axios.get("/api/products").then(response => setProducts(response.data));
   }, []);
 
   useEffect(() => {
     if (auth.id) {
-      const token = window.localStorage.getItem('token');
-      axios.get('/api/getLineItems', headers()).then(response => {
+      const token = window.localStorage.getItem("token");
+      axios.get("/api/getLineItems", headers()).then(response => {
         setLineItems(response.data);
       });
     }
@@ -49,7 +44,7 @@ const App = () => {
 
   useEffect(() => {
     if (auth.id) {
-      axios.get('/api/getCart', headers()).then(response => {
+      axios.get("/api/getCart", headers()).then(response => {
         setCart(response.data);
       });
     }
@@ -57,25 +52,25 @@ const App = () => {
 
   useEffect(() => {
     if (auth.id) {
-      axios.get('/api/getOrders', headers()).then(response => {
+      axios.get("/api/getOrders", headers()).then(response => {
         setOrders(response.data);
       });
     }
   }, [auth]);
 
   const login = async credentials => {
-    const token = (await axios.post('/api/auth', credentials)).data.token;
-    window.localStorage.setItem('token', token);
+    const token = (await axios.post("/api/auth", credentials)).data.token;
+    window.localStorage.setItem("token", token);
     exchangeTokenForAuth();
   };
 
   const exchangeTokenForAuth = async () => {
-    const response = await axios.get('/api/auth', headers());
+    const response = await axios.get("/api/auth", headers());
     setAuth(response.data);
   };
 
   const logout = () => {
-    window.location.hash = '#';
+    window.location.hash = "#";
     setAuth({});
   };
 
@@ -84,26 +79,25 @@ const App = () => {
   }, []);
 
   useEffect(() => {
-    window.addEventListener('hashchange', () => {
+    window.addEventListener("hashchange", () => {
       setParams(qs.parse(window.location.hash.slice(1)));
     });
   }, []);
 
   useEffect(() => {
-    if(auth.id) {
-      axios.get('/api/saves')
-        .then(response => setSaved(response.data))
+    if (auth.id) {
+      axios.get("/api/saves").then(response => setSaved(response.data));
     }
-  }, [auth])
+  }, [auth]);
 
   const createOrder = () => {
-    const token = window.localStorage.getItem('token');
+    const token = window.localStorage.getItem("token");
     axios
-      .post('/api/createOrder', null, headers())
+      .post("/api/createOrder", null, headers())
       .then(response => {
         setOrders([response.data, ...orders]);
-        const token = window.localStorage.getItem('token');
-        return axios.get('/api/getCart', headers());
+        const token = window.localStorage.getItem("token");
+        return axios.get("/api/getCart", headers());
       })
       .then(response => {
         setCart(response.data);
@@ -111,7 +105,7 @@ const App = () => {
   };
 
   const addToCart = productId => {
-    axios.post('/api/addToCart', { productId }, headers()).then(response => {
+    axios.post("/api/addToCart", { productId }, headers()).then(response => {
       const lineItem = response.data;
       const found = lineItems.find(_lineItem => _lineItem.id === lineItem.id);
       if (!found) {
@@ -124,28 +118,27 @@ const App = () => {
       }
     });
   };
-  
-  const save = (productId) => {
-    const found = saved.find(item => item.productId === productId)
-    if(found === undefined) {
-      axios.post('/api/saves', { productId }, headers()).then(response => {
-        setSaved([...saved, response.data])
-      })
-    }
-  }
 
-  const unsave = (saveId) => {
+  const save = productId => {
+    const found = saved.find(item => item.productId === productId);
+    if (found === undefined) {
+      axios.post("/api/saves", { productId }, headers()).then(response => {
+        setSaved([...saved, response.data]);
+      });
+    }
+  };
+
+  const unsave = saveId => {
     axios.delete(`/api/saves/${saveId}`).then(() => {
-      setSaved(saved.filter(_saved => _saved.id !== saveId))
-    })
-  }
+      setSaved(saved.filter(_saved => _saved.id !== saveId));
+    });
+  };
 
   const removeFromCart = lineItemId => {
     axios.delete(`/api/removeFromCart/${lineItemId}`, headers()).then(() => {
       setLineItems(lineItems.filter(_lineItem => _lineItem.id !== lineItemId));
     });
   };
-
 
   return (
     <Router>
@@ -208,13 +201,24 @@ const App = () => {
             />
           </Route>
           <Route exact path="/products">
-            <Products addToCart={ addToCart } products={ products } setProductView={setProductView} save={save}/>
+            <Products
+              addToCart={addToCart}
+              products={products}
+              setProductView={setProductView}
+              save={save}
+            />
           </Route>
           <Route exact path={`/products/${productView.id}`}>
-            <ProductPage product={productView} addToCart={addToCart}/>
+            <ProductPage product={productView} addToCart={addToCart} />
           </Route>
           <Route exact path="/saved">
-            <Saved addToCart={addToCart} saved={saved} products={products} userId={auth.id} unsave={unsave}/>
+            <Saved
+              addToCart={addToCart}
+              saved={saved}
+              products={products}
+              userId={auth.id}
+              unsave={unsave}
+            />
           </Route>
         </Switch>
       </div>
