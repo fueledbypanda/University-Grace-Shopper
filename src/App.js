@@ -177,6 +177,7 @@ const App = () => {
 
   return (
     <Router>
+
       <nav>
         <ul>
           <li>
@@ -195,6 +196,7 @@ const App = () => {
             <Link to="/saved">Saved</Link>
           </li>
           {auth.role === 'ADMIN' ? (
+
             <li>
               <Link to="/admin">Admin</Link>
             </li>
