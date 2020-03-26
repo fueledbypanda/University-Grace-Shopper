@@ -5,7 +5,7 @@ import SingleProductPage from "./SingleProductPage";
 const Products = ({ products, addToCart, setProductView, save }) => {
   return (
     <div id="products">
-      <h2>Products</h2>
+      <h1>Products</h1>
       <ul id="productsList">
         {products.map(product => {
           return (

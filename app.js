@@ -114,10 +114,33 @@ app.delete('/api/removeFromCart/:id', (req, res, next) => {
   .catch(next);
 });
 
+app.get('/api/promos', (req, res, next) => {
+  db.models.promos
+  .read()
+  .then(response => res.send(response))
+  .catch(next)
+})
+
+app.post('/api/promos', (req, res, next) => {
+  db.models.promos
+  .create(req.body.code, req.body.discount)
+  .then(response => res.send(response))
+  .catch(next)
+})
+
+app.delete('/api/promos/:id', (req, res, next) => {
+  console.log(req.params.id)
+  db.models.promos
+  .delete(req.params.id)
+  .then(response => res.send(response))
+  .catch(next)
+})
+
 app.post('/api/saves', (req, res, next) => {
   db.models.saved
   .create(req.user.id, req.body.productId)
   .then(response => res.send(response))
+  .catch(next)
 })
 
 app.get('/api/saves', (req, res, next) => {

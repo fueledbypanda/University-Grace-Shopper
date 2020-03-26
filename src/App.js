@@ -90,6 +90,12 @@ const App = () => {
     }
   }, [auth]);
 
+  useEffect(() => {
+    if (auth.id) {
+      axios.get("/api/promos").then(response => setPromos(response.data));
+    }
+  }, [auth]);
+
   const createOrder = () => {
     const token = window.localStorage.getItem("token");
     axios
@@ -140,6 +146,20 @@ const App = () => {
     });
   };
 
+  const createPromo = (code, discount) => {
+    axios
+      .post("/api/promos", { code: code, discount: discount })
+      .then(response => {
+        setPromos([...promos, response.data]);
+      });
+  };
+
+  const deletePromo = id => {
+    axios.delete(`/api/promos/${id}`).then(() => {
+      setPromos(promos.filter(item => item.id !== id));
+    });
+  };
+
   return (
     <Router>
       <div>
@@ -160,6 +180,11 @@ const App = () => {
             <li>
               <Link to="/saved">Saved</Link>
             </li>
+            {auth.role === "ADMIN" ? (
+              <li>
+                <Link to="/admin">Admin</Link>
+              </li>
+            ) : null}
           </ul>
         </nav>
 
@@ -198,6 +223,10 @@ const App = () => {
               cart={cart}
               products={products}
               setProductView={setProductView}
+              user={user}
+              setUser={setUser}
+              users={users}
+              setUsers={setUsers}
             />
           </Route>
           <Route exact path="/products">
@@ -220,6 +249,16 @@ const App = () => {
               unsave={unsave}
             />
           </Route>
+          {auth.role === "ADMIN" ? (
+            <Route exact path="/admin">
+              <Admin
+                user={auth}
+                createPromo={createPromo}
+                promos={promos}
+                deletePromo={deletePromo}
+              />
+            </Route>
+          ) : null}
         </Switch>
       </div>
     </Router>
