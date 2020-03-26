@@ -120,6 +120,25 @@ const App = () => {
       });
   };
 
+  const subtractFromCart = (productId, lineItem) => { 
+    if(lineItem.quantity > 1) {
+      axios.post('/api/subtractItem', { productId }, headers()).then(response => { 
+        const lineItem = response.data;
+        const updated = lineItems.map(item => {
+          if(item.id === lineItem.id) {
+            item.quantity -= 1
+            return item
+          }
+          return item
+        }) 
+  
+        setLineItems(updated)
+      })
+    } else {
+      removeFromCart(lineItem.id)
+    }
+  }
+
   const addToCart = productId => {
     axios.post('/api/addToCart', { productId }, headers()).then(response => {
       const lineItem = response.data;
@@ -167,6 +186,53 @@ const App = () => {
     .then(()=>{
       setPromos(promos.filter(item => item.id !== id))
     })
+  }
+
+  const lowerInventory = (productId) => {
+    const product = products.find(item => item.id === productId)
+    if(product.inventory > 0) {
+      axios.put(`/api/products/${productId}`, {inventory: product.inventory-1, op: '-'})
+        .then(response => {
+          setProducts(products.map(product => {
+            if(product.id === response.data.id) {
+              product.inventory = response.data.inventory
+              return product
+            } 
+            return product
+          })
+        )}
+      )
+    }
+  }
+
+  const addInventory = (productId, amount) => {
+    if(typeof amount === 'undefined') {
+      const product = products.find(item => item.id === productId)
+      axios.put(`/api/products/${productId}`, {inventory: product.inventory+1, op: '+'})
+        .then(response => {
+          setProducts(products.map(product => {
+            if(product.id === response.data.id) {
+              product.inventory = response.data.inventory
+              return product
+            } 
+            return product
+          })
+        )}
+      )
+    } else if(typeof amount === 'number'){
+      const product = products.find(item => item.id === productId)
+      axios.put(`/api/products/${productId}`, {inventory: product.inventory+amount, op: '+'})
+        .then(response => {
+          setProducts(products.map(product => {
+            if(product.id === response.data.id) {
+              product.inventory = response.data.inventory
+              return product
+            } 
+            return product
+          })
+        )}
+      )
+    }
   }
 
   return (
@@ -219,6 +285,10 @@ const App = () => {
               products={products}
               setProductView={setProductView}
               save={save}
+              addToCart={addToCart}
+              subtractFromCart={subtractFromCart}
+              addInventory={addInventory}
+              lowerInventory={lowerInventory}
             />
           </Route>
           <Route exact path="/orders">
@@ -231,7 +301,7 @@ const App = () => {
             />
           </Route>
           <Route exact path="/products">
-            <Products addToCart={ addToCart } products={ products } setProductView={setProductView} save={save}/>
+            <Products addToCart={ addToCart } products={ products } setProductView={setProductView} save={save} lowerInventory={lowerInventory}/>
           </Route>
           <Route exact path={`/products/${productView.id}`}>
             <ProductPage product={productView} addToCart={addToCart}/>

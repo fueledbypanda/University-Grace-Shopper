@@ -42,6 +42,7 @@ const sync = async () => {
       name VARCHAR(100) NOT NULL UNIQUE,
       price DECIMAL NOT NULL,
       image VARCHAR(255) NOT NULL,
+      inventory INT DEFAULT 100,
       CHECK (char_length(name) > 0)
     );
     CREATE TABLE orders(
