@@ -42,6 +42,7 @@ const sync = async () => {
       name VARCHAR(100) NOT NULL UNIQUE,
       price DECIMAL NOT NULL,
       image VARCHAR(255) NOT NULL,
+      inventory INT DEFAULT 100,
       department VARCHAR(255) NOT NULL,
       material VARCHAR(255) NOT NULL,
       adjective VARCHAR(255) NOT NULL,

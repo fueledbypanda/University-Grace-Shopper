@@ -107,6 +107,7 @@ const getLineItems = async userId => {
   return (await client.query(SQL, [userId])).rows;
 };
 
+
 module.exports = {
   getCart,
   getOrders,
