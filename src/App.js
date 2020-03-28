@@ -1,4 +1,3 @@
-  
 import React, { useState, useEffect } from 'react';
 import qs from 'qs';
 import axios from 'axios';
@@ -126,24 +125,26 @@ const App = () => {
       });
   };
 
-  const subtractFromCart = (productId, lineItem) => { 
-    if(lineItem.quantity > 1) {
-      axios.post('/api/subtractItem', { productId }, headers()).then(response => { 
-        const lineItem = response.data;
-        const updated = lineItems.map(item => {
-          if(item.id === lineItem.id) {
-            item.quantity -= 1
-            return item
-          }
-          return item
-        }) 
-  
-        setLineItems(updated)
-      })
+  const subtractFromCart = (productId, lineItem) => {
+    if (lineItem.quantity > 1) {
+      axios
+        .post('/api/subtractItem', { productId }, headers())
+        .then(response => {
+          const lineItem = response.data;
+          const updated = lineItems.map(item => {
+            if (item.id === lineItem.id) {
+              item.quantity -= 1;
+              return item;
+            }
+            return item;
+          });
+
+          setLineItems(updated);
+        });
     } else {
-      removeFromCart(lineItem.id)
+      removeFromCart(lineItem.id);
     }
-  }
+  };
 
   const addToCart = productId => {
     axios.post('/api/addToCart', { productId }, headers()).then(response => {
@@ -195,52 +196,67 @@ const App = () => {
     });
   };
 
-  const lowerInventory = (productId) => {
-    const product = products.find(item => item.id === productId)
-    if(product.inventory > 0) {
-      axios.put(`/api/products/${productId}`, {inventory: product.inventory-1, op: '-'})
+  const lowerInventory = productId => {
+    const product = products.find(item => item.id === productId);
+    if (product.inventory > 0) {
+      axios
+        .put(`/api/products/${productId}`, {
+          inventory: product.inventory - 1,
+          op: '-',
+        })
         .then(response => {
-          setProducts(products.map(product => {
-            if(product.id === response.data.id) {
-              product.inventory = response.data.inventory
-              return product
-            } 
-            return product
-          })
-        )}
-      )
+          setProducts(
+            products.map(product => {
+              if (product.id === response.data.id) {
+                product.inventory = response.data.inventory;
+                return product;
+              }
+              return product;
+            })
+          );
+        });
     }
-  }
+  };
 
   const addInventory = (productId, amount) => {
-    if(typeof amount === 'undefined') {
-      const product = products.find(item => item.id === productId)
-      axios.put(`/api/products/${productId}`, {inventory: product.inventory+1, op: '+'})
+    if (typeof amount === 'undefined') {
+      const product = products.find(item => item.id === productId);
+      axios
+        .put(`/api/products/${productId}`, {
+          inventory: product.inventory + 1,
+          op: '+',
+        })
         .then(response => {
-          setProducts(products.map(product => {
-            if(product.id === response.data.id) {
-              product.inventory = response.data.inventory
-              return product
-            } 
-            return product
-          })
-        )}
-      )
-    } else if(typeof amount === 'number'){
-      const product = products.find(item => item.id === productId)
-      axios.put(`/api/products/${productId}`, {inventory: product.inventory+amount, op: '+'})
+          setProducts(
+            products.map(product => {
+              if (product.id === response.data.id) {
+                product.inventory = response.data.inventory;
+                return product;
+              }
+              return product;
+            })
+          );
+        });
+    } else if (typeof amount === 'number') {
+      const product = products.find(item => item.id === productId);
+      axios
+        .put(`/api/products/${productId}`, {
+          inventory: product.inventory + amount,
+          op: '+',
+        })
         .then(response => {
-          setProducts(products.map(product => {
-            if(product.id === response.data.id) {
-              product.inventory = response.data.inventory
-              return product
-            } 
-            return product
-          })
-        )}
-      )
+          setProducts(
+            products.map(product => {
+              if (product.id === response.data.id) {
+                product.inventory = response.data.inventory;
+                return product;
+              }
+              return product;
+            })
+          );
+        });
     }
-  }
+  };
 
   return (
     <Router>
@@ -256,7 +272,7 @@ const App = () => {
             <Link to="/orders">Orders</Link>
           </li>
           <li>
-            <Link to="/products">View All Products</Link>
+            <Link to="/products">Products</Link>
           </li>
           <li>
             <Link to="/saved">Saved</Link>
