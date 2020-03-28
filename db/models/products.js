@@ -18,6 +18,7 @@ const products = {
     ).rows[0];
   },
 
+<<<<<<< HEAD
   changeInventory : async(productId, total, op) => {
     if(op === '-') {
       const sql = `UPDATE products SET inventory=$1 WHERE id = $2 returning *`
@@ -27,7 +28,19 @@ const products = {
       const sql = `UPDATE products SET inventory=$1 WHERE id = $2 returning *`
       const response = await client.query(sql, [total, productId])
       return response.rows[0]
+=======
+  changeInventory: async (productId, total, op) => {
+    if (op === "-") {
+      const sql = `UPDATE products SET inventory=$1 WHERE id = $2 returning *`;
+      const response = await client.query(sql, [total, productId]);
+      return response.rows[0];
+    } else if (op === "+") {
+      const sql = `UPDATE products SET inventory=$1 WHERE id = $2 returning *`;
+      const response = await client.query(sql, [total, productId]);
+      return response.rows[0];
+>>>>>>> 0dd031971535159ccde6db49f8f398842320f689
     }
+  }
 };
 
 module.exports = products;
