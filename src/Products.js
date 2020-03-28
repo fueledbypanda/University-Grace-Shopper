@@ -26,11 +26,7 @@ const Products = ({
                   {product.inventory <= 0 ? (
                     <p>Out Of Stock</p>
                   ) : product.inventory > 0 && product.inventory < 15 ? (
-<<<<<<< HEAD
-                    <p>Limited Stock</p>
-=======
                     <p>Limited Stock ({product.inventory})</p>
->>>>>>> Saturday
                   ) : (
                     <p>In Stock</p>
                   )}
@@ -38,16 +34,11 @@ const Products = ({
               </Link>
               <button
                 onClick={() => {
-<<<<<<< HEAD
-                  addToCart(product.id);
-                  lowerInventory(product.id);
-=======
                   console.log(product.inventory);
                   if (product.inventory !== 0) {
                     addToCart(product.id);
                     lowerInventory(product.id);
                   }
->>>>>>> Saturday
                 }}
               >
                 Add to Cart
