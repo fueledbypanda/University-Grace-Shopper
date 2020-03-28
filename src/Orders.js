@@ -20,7 +20,7 @@ const Orders = ({
   }
   const usersCopy = [...users];
   const userIndex = users.indexOf(user);
-  let [addresses, setAddresses] = useState(userCopy.addresses);
+  let [addresses, setAddresses] = useState([...userCopy.addresses]);
   return (
     <div id="orders">
       <h1>Orders</h1>
@@ -38,13 +38,13 @@ const Orders = ({
             userCopy.addresses.unshift(newAddress);
             Axios.put(`/api/users/${user.id}`, userCopy);
             usersCopy.slice(userIndex, 1, userCopy);
+            setUsers([...usersCopy]);
 
             setAddresses([newAddress, ...addresses]);
             setNewAddress('');
             setUser(userCopy);
             setSelectedAddress(newAddress);
           };
-          console.log(addresses);
           const userAddressOptions = addresses.map((address, i) => (
             <option key={i} value={address}>
               {address}
@@ -86,7 +86,7 @@ const Orders = ({
               <span className="address">
                 <h3>Shipping Address: {selectedAddress}</h3>
               </span>
-              <ul className>
+              <ul>
                 {_lineItems.map(lineItem => {
                   const product = products.find(
                     product => product.id === lineItem.productId
