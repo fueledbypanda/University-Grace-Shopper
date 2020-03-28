@@ -17,7 +17,7 @@ const products = {
       ])
     ).rows[0];
   },
-  
+
   changeInventory : async(productId, total, op) => {
     if(op === '-') {
       const sql = `UPDATE products SET inventory=$1 WHERE id = $2 returning *`
