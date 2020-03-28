@@ -157,6 +157,13 @@ app.delete('/api/saves/:id', (req, res, next)  => {
   .catch(next)
 })
 
+app.put('/api/products/:id', (req, res, next) => {
+  db.models.products
+  .changeInventory(req.params.id, req.body.inventory, req.body.op)
+  .then(products => res.send(products))
+  .catch(next)
+})
+
 app.get('/api/products', (req, res, next) => {
   db.models.products
   .read()

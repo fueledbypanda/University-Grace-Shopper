@@ -10,7 +10,9 @@ const Cart = ({
   setProductView,
   subtractFromCart,
   addToCart,
-  save
+  save,
+  addInventory,
+  lowerInventory
 }) => {
   return (
     <div id="cart">
@@ -40,21 +42,35 @@ const Cart = ({
                 </Link>
                 <span>
                   <button
-                    onClick={el => subtractFromCart(product.id, lineItem)}
-                  >
+                    onClick={el => {
+                      subtractFromCart(product.id, lineItem)
+                      addInventory(product.id)
+                    }
+                  }>
                     -
                   </button>
                   <span className="quantity">
                     Quantity: {lineItem.quantity}
                   </span>
-                  <button onClick={el => addToCart(product.id)}>+</button>
+                  <button 
+                    onClick={el => {
+                      addToCart(product.id)
+                      lowerInventory(product.id)
+                    }
+                  }>
+                    +
+                  </button>
                 </span>
-                <button onClick={() => removeFromCart(lineItem.id)}>
+                <button onClick={() => {
+                  removeFromCart(lineItem.id)
+                  addInventory(product.id, lineItem.quantity)
+                }}>
                   Remove From Cart
                 </button>
                 <button onClick={()=>{
                   removeFromCart(lineItem.id)
                   save(product.id)
+                  addInventory(product.id)
                 }}>
                   Save for Later
                 </button>
