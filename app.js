@@ -89,6 +89,11 @@ app.post('/api/createOrder', (req, res, next) => {
     .catch(next);
 });
 
+app.put('/api/orders/:id', (req, res, next) => {
+  const id = req.params.id;
+  db.models.users.update(req.body).then(response => res.send(response));
+});
+
 app.get('/api/getLineItems', (req, res, next) => {
   db.getLineItems(req.user.id)
     .then(lineItems => res.send(lineItems))
@@ -159,6 +164,13 @@ app.delete('/api/saves/:id', (req, res, next) => {
 app.get('/api/products', (req, res, next) => {
   db.models.products
     .read()
+    .then(products => res.send(products))
+    .catch(next);
+});
+
+app.put('/api/products/:id', (req, res, next) => {
+  db.models.products
+    .changeInventory(req.params.id, req.body.inventory, req.body.op)
     .then(products => res.send(products))
     .catch(next);
 });

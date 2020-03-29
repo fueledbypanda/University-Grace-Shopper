@@ -51,8 +51,10 @@ const sync = async () => {
     CREATE TABLE orders(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       "userId" UUID REFERENCES users(id) NOT NULL,
+      address VARCHAR default '',
       status VARCHAR(10) DEFAULT 'CART',
       "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
     );
     CREATE TABLE "lineItems"(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

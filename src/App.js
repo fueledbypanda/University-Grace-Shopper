@@ -111,10 +111,10 @@ const App = () => {
     }
   }, [auth]);
 
-  const createOrder = () => {
+  const createOrder = order => {
     const token = window.localStorage.getItem('token');
     axios
-      .post('/api/createOrder', null, headers())
+      .post('/api/createOrder', order, headers())
       .then(response => {
         setOrders([response.data, ...orders]);
         const token = window.localStorage.getItem('token');
