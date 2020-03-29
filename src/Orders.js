@@ -26,7 +26,6 @@ const Orders = ({
       <h1>Orders</h1>
       <ul>
         {orders.map(order => {
-          console.log(order);
           totalPrice = 0;
           const _lineItems = lineItems.filter(
             lineItem => lineItem.orderId === order.id
@@ -52,14 +51,7 @@ const Orders = ({
                     product => product.id === lineItem.productId
                   );
                   totalPrice = totalPrice + product.price * lineItem.quantity;
-                  const [rating, setRating] = useState(undefined);
-                  const handleRating = e => {
-                    setRating(e.target.value);
-                    const lineItemCopy = { ...lineItem };
-                    lineItemCopy.rating = rating;
 
-                    Axios.put(`/api/lineItems/${lineItem.id}`, lineItemCopy);
-                  };
                   return (
                     <li key={lineItem.id}>
                       <Link
@@ -81,16 +73,6 @@ const Orders = ({
                       <span className="subTotal">
                         Subtotal: ${Number(totalPrice).toFixed(2)}
                       </span>
-                      <div>
-                        Rating:
-                        <input
-                          type="range"
-                          min="0"
-                          max="5"
-                          onChange={handleRating}
-                        ></input>
-                        {rating}
-                      </div>
                     </li>
                   );
                 })}

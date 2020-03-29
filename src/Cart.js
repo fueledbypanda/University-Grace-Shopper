@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Axios from 'axios';
 
@@ -18,6 +18,8 @@ const Cart = ({
   users,
   setUser,
   setUsers,
+  orders,
+  setOrders,
 }) => {
   const userCopy = { ...user };
   const usersCopy = [...users];
@@ -46,6 +48,18 @@ const Cart = ({
       {address}
     </option>
   ));
+
+  const setAddress = async () => {
+    const orderCopy = { ...cart };
+    const ordersCopy = [...orders];
+    orderCopy.address = selectedAddress;
+    console.log(orderCopy);
+    const updated = (await Axios.put(`api/orders/${orderCopy.id}`, orderCopy))
+      .data;
+    console.log(updated);
+    ordersCopy.slice[(0, 1, updated)];
+    setOrders([...ordersCopy]);
+  };
 
   return (
     <div id="cart">
@@ -78,7 +92,10 @@ const Cart = ({
       </form>
       <button
         disabled={!lineItems.find(lineItem => lineItem.orderId === cart.id)}
-        onClick={() => createOrder({ address: selectedAddress })}
+        onClick={() => {
+          createOrder();
+          setAddress();
+        }}
       >
         Create Order
       </button>

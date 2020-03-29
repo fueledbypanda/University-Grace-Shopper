@@ -39,6 +39,12 @@ const App = () => {
 
   useEffect(() => {
     if (auth.id) {
+      axios.get('/api/orders').then(response => setOrders(response.data));
+    }
+  }, [auth]);
+
+  useEffect(() => {
+    if (auth.id) {
       const currentUser = users.find(user => user.id === auth.id);
       setUser(currentUser);
     }
@@ -111,10 +117,10 @@ const App = () => {
     }
   }, [auth]);
 
-  const createOrder = order => {
+  const createOrder = () => {
     const token = window.localStorage.getItem('token');
     axios
-      .post('/api/createOrder', order, headers())
+      .post('/api/createOrder', null, headers())
       .then(response => {
         setOrders([response.data, ...orders]);
         const token = window.localStorage.getItem('token');
@@ -319,6 +325,8 @@ const App = () => {
               users={users}
               setUser={setUser}
               setUsers={setUsers}
+              orders={orders}
+              setOrders={setOrders}
             />
           </Route>
           <Route exact path="/orders">
