@@ -32,7 +32,8 @@ const App = () => {
   const [promos, setPromos] = useState([]);
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
-
+  const [userProducts, setUserProducts] = useState([]);
+  console.log(userProducts);
   useEffect(() => {
     axios.get('/api/users').then(response => setUsers(response.data));
   }, []);
@@ -78,6 +79,12 @@ const App = () => {
       });
     }
   }, [auth]);
+
+  useEffect(() => {
+    axios
+      .get('/api/user_products')
+      .then(response => setUserProducts(response.data));
+  }, []);
 
   const login = async credentials => {
     const token = (await axios.post('/api/auth', credentials)).data.token;
@@ -327,6 +334,8 @@ const App = () => {
               setUsers={setUsers}
               orders={orders}
               setOrders={setOrders}
+              userProducts={userProducts}
+              setUserProducts={setUserProducts}
             />
           </Route>
           <Route exact path="/orders">
@@ -352,7 +361,11 @@ const App = () => {
             />
           </Route>
           <Route exact path={`/products/${productView.id}`}>
-            <ProductPage product={productView} addToCart={addToCart} />
+            <ProductPage
+              product={productView}
+              addToCart={addToCart}
+              userProducts={userProducts}
+            />
           </Route>
           <Route exact path="/saved">
             <Saved

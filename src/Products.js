@@ -34,7 +34,6 @@ const Products = ({
               </Link>
               <button
                 onClick={() => {
-                  console.log(product.inventory);
                   if (product.inventory !== 0) {
                     addToCart(product.id);
                     lowerInventory(product.id);

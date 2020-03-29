@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 
-const ProductPage = ({ product, addToCart }) => {
-  const [rating, setRating] = useState(undefined);
+const ProductPage = ({ product, addToCart, userProducts }) => {
+  const [rating, setRating] = useState(product.rating);
   const handleRating = e => {
     setRating(e.target.value);
   };
+  let isPurchased = false;
+  const purchasedProduct = userProducts.find(
+    userProduct => userProduct.productId === product.id
+  );
+  if (purchasedProduct) {
+    isPurchased = true;
+  }
 
   return (
     <div id="productPage" className="card">
@@ -14,7 +21,14 @@ const ProductPage = ({ product, addToCart }) => {
       <h4>{product.department}</h4>
       <div>
         Rating:
-        <input type="range" min="0" max="5" onChange={handleRating}></input>
+        <input
+          id="slider"
+          type="range"
+          min="0"
+          max="5"
+          onChange={handleRating}
+          disabled={!isPurchased}
+        ></input>
         {rating}
       </div>
       <h4>Description</h4>
