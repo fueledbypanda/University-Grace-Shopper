@@ -1,12 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const ProductPage = ({ product, addToCart }) => {
+  const [rating, setRating] = useState(undefined);
+  const handleRating = e => {
+    setRating(e.target.value);
+  };
+
   return (
     <div id="productPage" className="card">
       <img src={product.image} />
       <h1>{product.name}</h1>
       <p className="price">Price: ${Number(product.price).toFixed(2)}</p>
       <h4>{product.department}</h4>
+      <div>
+        Rating:
+        <input type="range" min="0" max="5" onChange={handleRating}></input>
+        {rating}
+      </div>
       <h4>Description</h4>
       <p>This awesome {product.adjective} product!</p>
       <p>
