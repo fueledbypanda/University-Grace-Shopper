@@ -20,6 +20,8 @@ const Cart = ({
   setUsers,
   orders,
   setOrders,
+  userProducts,
+  setUserProducts,
 }) => {
   const userCopy = { ...user };
   const usersCopy = [...users];
@@ -53,12 +55,18 @@ const Cart = ({
     const orderCopy = { ...cart };
     const ordersCopy = [...orders];
     orderCopy.address = selectedAddress;
-    console.log(orderCopy);
     const updated = (await Axios.put(`api/orders/${orderCopy.id}`, orderCopy))
       .data;
-    console.log(updated);
     ordersCopy.slice[(0, 1, updated)];
     setOrders([...ordersCopy]);
+  };
+  const createUserProduct = async () => {
+    lineItems.map(async lineItem => {
+      const prod = { userId: user.id, productId: lineItem.productId };
+      const userProduct = (await Axios.post('/api/user_products', prod)).data;
+      const userProductsCopy = [...userProducts, userProduct];
+      setUserProducts([...userProductsCopy]);
+    });
   };
 
   return (
@@ -93,6 +101,7 @@ const Cart = ({
       <button
         disabled={!lineItems.find(lineItem => lineItem.orderId === cart.id)}
         onClick={() => {
+          createUserProduct();
           createOrder();
           setAddress();
         }}

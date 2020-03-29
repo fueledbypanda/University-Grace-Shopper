@@ -3,7 +3,13 @@ const faker = require('faker');
 
 const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
-const models = ({ products, users, orders, lineItems } = require('./models'));
+const models = ({
+  products,
+  users,
+  orders,
+  lineItems,
+  userProducts,
+} = require('./models'));
 
 const {
   getCart,
@@ -21,6 +27,7 @@ const sync = async () => {
   const SQL = `
     CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
+    DROP TABLE IF EXISTS user_products;
     DROP TABLE IF EXISTS "lineItems";
     DROP TABLE IF EXISTS orders;
     DROP TABLE IF EXISTS users cascade;
@@ -47,6 +54,12 @@ const sync = async () => {
       material VARCHAR(255) NOT NULL,
       adjective VARCHAR(255) NOT NULL,
       CHECK (char_length(name) > 0)
+    );
+    CREATE TABLE user_products (
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      "userId" UUID NOT NULL,
+      "productId" UUID NOT NULL,
+      rating INTEGER DEFAULT null
     );
     CREATE TABLE orders(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),

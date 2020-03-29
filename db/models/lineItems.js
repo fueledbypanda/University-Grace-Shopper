@@ -12,6 +12,20 @@ const lineItems = {
     return (await client.query(`SELECT * FROM "lineItems" WHERE id = $1`, [id]))
       .rows[0];
   },
+  update: async updatedItem => {
+    return (
+      await client.query(
+        `UPDATE "lineItems" SET "orderId" = $1, "productId" = $2, quantity = $3, rating = $4 WHERE id = $5`,
+        [
+          updatedItem.orderId,
+          updatedItem.productId,
+          updatedItem.quantity,
+          updatedItem.rating,
+          updatedItem.id,
+        ]
+      )
+    ).rows[0];
+  },
 };
 
 module.exports = lineItems;

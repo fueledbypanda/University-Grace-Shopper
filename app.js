@@ -8,6 +8,7 @@ const morgan = require('morgan');
 app.use('/dist', express.static(path.join(__dirname, 'dist')));
 app.use('/assets', express.static(path.join(__dirname, 'assets')));
 
+app.use(require('cors')());
 app.use(express.json());
 
 var myLogger = function(req, res, next) {
@@ -19,16 +20,6 @@ app.use(myLogger);
 app.use(
   morgan(':method :url :status :res[content-length] - :response-time ms')
 );
-
-// var myLogger = function(req, res, next) {
-//   console.log(req.body);
-//   next();
-// };
-// app.use(myLogger);
-
-// app.use(
-//   morgan(':method :url :status :res[content-length] - :response-time ms')
-// );
 
 const isLoggedIn = (req, res, next) => {
   if (!req.user) {
@@ -93,8 +84,9 @@ app.get('/api/getOrders', (req, res, next) => {
     .catch(next);
 });
 
-app.get('/api/getOrders', (req, res, next) => {
-  db.readOrders()
+app.get('/api/orders', (req, res, next) => {
+  db.models.orders
+    .read()
     .then(orders => res.send(orders))
     .catch(next);
 });
@@ -237,6 +229,27 @@ Object.keys(models).forEach(key => {
       .then(items => res.send(items))
       .catch(next);
   });
+});
+
+app.get('/api/user_products', (req, res, next) => {
+  db.models.userProducts
+    .read()
+    .then(userProducts => res.send(userProducts))
+    .catch(next);
+});
+
+app.post('/api/user_products', (req, res, next) => {
+  db.models.userProducts
+    .create(req.body)
+    .then(userProduct => {
+      res.send(userProduct);
+    })
+    .catch(next);
+});
+
+app.put(`/api/user_products/:id`, (req, res, next) => {
+  const id = req.params.id;
+  db.models.userProducts.update(req.body).then(response => res.send(response));
 });
 
 app.use((req, res, next) => {
