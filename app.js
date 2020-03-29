@@ -101,80 +101,72 @@ app.post('/api/addToCart', (req, res, next) => {
     .catch(next);
 });
 
-
 app.post('/api/subtractItem', (req, res, next) => {
   db.subtractItem({ userId: req.user.id, productId: req.body.productId })
-  .then(lineItem => res.send(lineItem))
-  .catch(next);
+    .then(lineItem => res.send(lineItem))
+    .catch(next);
 });
 
 app.delete('/api/removeFromCart/:id', (req, res, next) => {
   db.removeFromCart({ userId: req.user.id, lineItemId: req.params.id })
-  .then(() => res.sendStatus(204))
-  .catch(next);
+    .then(() => res.sendStatus(204))
+    .catch(next);
 });
 
 app.get('/api/promos', (req, res, next) => {
   db.models.promos
-  .read()
-  .then(response => res.send(response))
-  .catch(next)
-})
+    .read()
+    .then(response => res.send(response))
+    .catch(next);
+});
 
 app.post('/api/promos', (req, res, next) => {
   db.models.promos
-  .create(req.body.code, req.body.discount)
-  .then(response => res.send(response))
-  .catch(next)
-})
+    .create(req.body.code, req.body.discount)
+    .then(response => res.send(response))
+    .catch(next);
+});
 
 app.delete('/api/promos/:id', (req, res, next) => {
-  console.log(req.params.id)
+  console.log(req.params.id);
   db.models.promos
-  .delete(req.params.id)
-  .then(response => res.send(response))
-  .catch(next)
-})
+    .delete(req.params.id)
+    .then(response => res.send(response))
+    .catch(next);
+});
 
 app.post('/api/saves', (req, res, next) => {
   db.models.saved
-  .create(req.user.id, req.body.productId)
-  .then(response => res.send(response))
-  .catch(next)
-})
+    .create(req.user.id, req.body.productId)
+    .then(response => res.send(response))
+    .catch(next);
+});
 
 app.get('/api/saves', (req, res, next) => {
   db.models.saved
-  .read()
-  .then(saves => res.send(saves))
-  .catch(next)
-})
+    .read()
+    .then(saves => res.send(saves))
+    .catch(next);
+});
 
-app.delete('/api/saves/:id', (req, res, next)  => {
+app.delete('/api/saves/:id', (req, res, next) => {
   db.models.saved
-  .delete(req.params.id)
-  .then(saves => res.send(saves))
-  .catch(next)
-})
-
-app.put('/api/products/:id', (req, res, next) => {
-  db.models.products
-  .changeInventory(req.params.id, req.body.inventory, req.body.op)
-  .then(products => res.send(products))
-  .catch(next)
-})
+    .delete(req.params.id)
+    .then(saves => res.send(saves))
+    .catch(next);
+});
 
 app.get('/api/products', (req, res, next) => {
   db.models.products
-  .read()
-  .then(products => res.send(products))
-  .catch(next);
+    .read()
+    .then(products => res.send(products))
+    .catch(next);
 });
 
 app.get('/api/users', (req, res, next) => {
   db.models.users
-  .read()
-  .then(users => res.send(users))
+    .read()
+    .then(users => res.send(users))
     .catch(next);
 });
 
@@ -192,8 +184,8 @@ app.get('/api/lineItems/:id', (req, res, next) => {
     .readOne(req.params.id)
     .then(lineItem => res.send(lineItem))
     .catch(next);
-  });
-  
+});
+
 app.put('/api/users/:id', (req, res, next) => {
   const id = req.params.id;
   db.models.users.update(req.body).then(response => res.send(response));

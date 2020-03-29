@@ -315,6 +315,10 @@ const App = () => {
               subtractFromCart={subtractFromCart}
               addInventory={addInventory}
               lowerInventory={lowerInventory}
+              user={user}
+              users={users}
+              setUser={setUser}
+              setUsers={setUsers}
             />
           </Route>
           <Route exact path="/orders">

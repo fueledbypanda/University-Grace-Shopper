@@ -1,9 +1,9 @@
-const client = require("./client");
-const faker = require("faker");
+const client = require('./client');
+const faker = require('faker');
 
-const { authenticate, compare, findUserFromToken, hash } = require("./auth");
+const { authenticate, compare, findUserFromToken, hash } = require('./auth');
 
-const models = ({ products, users, orders, lineItems } = require("./models"));
+const models = ({ products, users, orders, lineItems } = require('./models'));
 
 const {
   getCart,
@@ -14,8 +14,8 @@ const {
   getLineItems,
   subtractItem,
   getSaves,
-  addToSave
-} = require("./userMethods");
+  addToSave,
+} = require('./userMethods');
 
 const sync = async () => {
   const SQL = `
@@ -77,20 +77,20 @@ const sync = async () => {
 
   const _users = {
     lucy: {
-      username: "lucy",
-      password: "LUCY",
-      role: "ADMIN"
+      username: 'lucy',
+      password: 'LUCY',
+      role: 'ADMIN',
     },
     moe: {
-      username: "moe",
-      password: "MOE",
-      role: null
+      username: 'moe',
+      password: 'MOE',
+      role: null,
     },
     curly: {
-      username: "larry",
-      password: "LARRY",
-      role: null
-    }
+      username: 'larry',
+      password: 'LARRY',
+      role: null,
+    },
   };
 
   const _products = {};
@@ -102,7 +102,7 @@ const sync = async () => {
       image: faker.image.avatar(),
       department: faker.commerce.department(),
       material: faker.commerce.productMaterial(),
-      adjective: faker.commerce.productAdjective()
+      adjective: faker.commerce.productAdjective(),
     };
     return mockProduct;
   };
@@ -124,11 +124,11 @@ const sync = async () => {
 
   const _orders = {
     moe: {
-      userId: moe.id
+      userId: moe.id,
     },
     lucy: {
-      userId: lucy.id
-    }
+      userId: lucy.id,
+    },
   };
 
   const userMap = (await users.read()).reduce((acc, user) => {
@@ -141,7 +141,7 @@ const sync = async () => {
   }, {});
   return {
     users: userMap,
-    products: productMap
+    products: productMap,
   };
 };
 
@@ -158,5 +158,5 @@ module.exports = {
   getLineItems,
   subtractItem,
   getSaves,
-  addToSave
+  addToSave,
 };
