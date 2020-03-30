@@ -1,10 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Axios from 'axios';
 
-const ProductPage = ({ product, addToCart, userProducts }) => {
-  const [rating, setRating] = useState(product.rating);
-  const handleRating = e => {
-    setRating(e.target.value);
-  };
+const ProductPage = ({ product, addToCart, userProducts, setUserProducts }) => {
   let isPurchased = false;
   const purchasedProduct = userProducts.find(
     userProduct => userProduct.productId === product.id
@@ -12,6 +9,11 @@ const ProductPage = ({ product, addToCart, userProducts }) => {
   if (purchasedProduct) {
     isPurchased = true;
   }
+  const [rating, setRating] = useState('');
+  const handleRating = e => {
+    e.preventDefault();
+    setRating(e.target.value);
+  };
 
   return (
     <div id="productPage" className="card">
@@ -26,6 +28,7 @@ const ProductPage = ({ product, addToCart, userProducts }) => {
           type="range"
           min="0"
           max="5"
+          value={rating}
           onChange={handleRating}
           disabled={!isPurchased}
         ></input>
@@ -41,6 +44,15 @@ const ProductPage = ({ product, addToCart, userProducts }) => {
         in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
         pariatur.
       </p>
+      <div>
+        {product.inventory <= 0 ? (
+          <p>Out Of Stock</p>
+        ) : product.inventory > 0 && product.inventory < 15 ? (
+          <p>Limited Stock ({product.inventory})</p>
+        ) : (
+          <p>In Stock</p>
+        )}
+      </div>
       <button onClick={() => addToCart(product.id)}>Add to Cart</button>
     </div>
   );

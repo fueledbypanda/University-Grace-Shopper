@@ -33,7 +33,7 @@ const App = () => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const [userProducts, setUserProducts] = useState([]);
-  console.log(userProducts);
+
   useEffect(() => {
     axios.get('/api/users').then(response => setUsers(response.data));
   }, []);
@@ -279,14 +279,15 @@ const App = () => {
             <Link to="/">Home</Link>
           </li>
           <li>
+            <Link to="/products">Products</Link>
+          </li>
+          <li>
             <Link to="/cart">Cart</Link>
           </li>
           <li>
             <Link to="/orders">Orders</Link>
           </li>
-          <li>
-            <Link to="/products">Products</Link>
-          </li>
+
           <li>
             <Link to="/saved">Saved</Link>
           </li>
@@ -365,6 +366,7 @@ const App = () => {
               product={productView}
               addToCart={addToCart}
               userProducts={userProducts}
+              setUserProducts={setUserProducts}
             />
           </Route>
           <Route exact path="/saved">
