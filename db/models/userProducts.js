@@ -14,7 +14,7 @@ const userProducts = {
 
   update: async updatedUserProduct => {
     return (
-      await client.query(`UPDATE orders SET rating = $1 WHERE id = $2`, [
+      await client.query(`UPDATE user_products SET rating = $1 WHERE id = $2`, [
         updatedUserProduct.rating,
         updatedUserProduct.id,
       ])

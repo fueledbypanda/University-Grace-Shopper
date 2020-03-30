@@ -62,17 +62,19 @@ const Orders = ({
                         <img src={product.image} />
                         {product && product.name}
                       </Link>
-
-                      <span className="price">
-                        Price: ${Number(product.price).toFixed(2)}
-                      </span>
-                      <span className="quantity">
-                        Quantity: {lineItem.quantity} ($
-                        {Number(product.price * lineItem.quantity).toFixed(2)})
-                      </span>
-                      <span className="subTotal">
-                        Subtotal: ${Number(totalPrice).toFixed(2)}
-                      </span>
+                      <div className="orderInfo">
+                        <span className="price">
+                          Price: ${Number(product.price).toFixed(2)}
+                        </span>
+                        <span className="quantity">
+                          Quantity: {lineItem.quantity} ($
+                          {Number(product.price * lineItem.quantity).toFixed(2)}
+                          )
+                        </span>
+                        <span className="subTotal">
+                          Subtotal: ${Number(totalPrice).toFixed(2)}
+                        </span>
+                      </div>
                     </li>
                   );
                 })}

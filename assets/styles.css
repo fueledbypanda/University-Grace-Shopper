@@ -1,10 +1,10 @@
 html {
-  background-image: url("https://aquarianspirals.files.wordpress.com/2014/08/ocean-beach-wave-background-hd-wallpaper-desktop.jpg");
+  background-image: url('https://aquarianspirals.files.wordpress.com/2014/08/ocean-beach-wave-background-hd-wallpaper-desktop.jpg');
   background-size: auto;
 }
 
 body {
-  font-family: "Oxanium";
+  font-family: 'Oxanium';
   margin: 0;
   width: 100%;
   overflow: hidden;
@@ -73,7 +73,7 @@ button {
   color: white;
   border-radius: 10px;
   font-size: 16px;
-  font-family: "Righteous";
+  font-family: 'Righteous';
 }
 
 nav {
@@ -86,7 +86,7 @@ nav a {
   color: white;
   text-decoration: none;
   font-size: 24px;
-  font-family: "Righteous";
+  font-family: 'Righteous';
 }
 
 nav ul {
@@ -114,11 +114,56 @@ nav ul {
 }
 
 #productPage img {
-  width: 300px;
-  height: 300px;
+  width: 200px;
+  height: 200px;
+}
+
+#saved li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.orderInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+#saved div {
+  display: flex;
+  justify-content: center;
+}
+
+#saved p {
+  text-align: center;
+}
+
+#savedProducts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#savedProductsList {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 32px 0 32px;
+  overflow: scroll;
+  height: 70vh;
+  width: 80%;
 }
 
 #products {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 32px;
+}
+#saved {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -169,7 +214,7 @@ a > div {
 }
 
 #products a {
-  font-family: "Righteous";
+  font-family: 'Righteous';
   text-decoration: none;
   color: teal;
   font-size: 16px;
@@ -178,7 +223,7 @@ a > div {
 #orders a {
   text-decoration: none;
   color: teal;
-  font-family: "Righteous";
+  font-family: 'Righteous';
   font-size: 16px;
 }
 
@@ -186,7 +231,7 @@ a > div {
   text-decoration: none;
   color: teal;
   font-size: 16px;
-  font-family: "Righteous";
+  font-family: 'Righteous';
 }
 
 li > a {
@@ -221,11 +266,11 @@ li > a {
 h2 {
   text-align: center;
 
-  font-family: "Righteous";
+  font-family: 'Righteous';
 }
 h1 {
   text-align: center;
-  font-family: "Righteous";
+  font-family: 'Righteous';
 }
 
 #home {
@@ -283,11 +328,15 @@ img {
 }
 .card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  max-width: 300px;
+  width: 70%;
 
   text-align: center;
   font-family: arial;
-  background-color: blanchedalmond;
+  background-color: rgba(242, 242, 242, 0.502);
+}
+
+#productPage.card {
+  padding: 16px;
 }
 
 .price {

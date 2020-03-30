@@ -59,7 +59,7 @@ const sync = async () => {
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       "userId" UUID NOT NULL,
       "productId" UUID NOT NULL,
-      rating INTEGER DEFAULT null
+      rating INTEGER DEFAULT NULL
     );
     CREATE TABLE orders(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
