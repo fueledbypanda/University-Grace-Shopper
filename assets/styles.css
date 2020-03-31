@@ -21,6 +21,8 @@ body {
 
 .addressForm {
   width: 70%;
+  background-color: rgba(0, 0, 0, 0.413);
+  border: none;
 }
 
 form {
@@ -47,6 +49,11 @@ form > * {
 
 ul {
   padding: 0;
+  border-radius: 15px;
+}
+
+ul::-webkit-scrollbar {
+  display: none;
 }
 
 li {
@@ -154,6 +161,7 @@ nav ul {
   overflow: scroll;
   height: 70vh;
   width: 80%;
+  background-color: rgba(242, 242, 242, 0.502);
 }
 
 #products {
@@ -177,6 +185,7 @@ nav ul {
   justify-content: center;
   height: 70vh;
   overflow: scroll;
+  background-color: rgba(242, 242, 242, 0.502);
 }
 #productsList > li {
   display: flex;
@@ -191,7 +200,7 @@ nav ul {
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding: 32px;
+  padding: 16px;
   align-items: center;
 }
 
@@ -244,9 +253,10 @@ li > a {
 #cart ul {
   display: flex;
   flex-direction: column;
-  height: 65vh;
+  height: 35vh;
   overflow: scroll;
   width: 100%;
+  background-color: rgba(242, 242, 242, 0.502);
 }
 
 #cart li {
@@ -283,18 +293,19 @@ h1 {
 
 #orders {
   padding: 32px;
-  width: 100%;
 }
+
 #orders > ul {
-  overflow: scroll;
-  width: 100%;
-  height: 75vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-y: scroll;
+
+  height: 75vh;
 }
 
 #orders > ul > li {
+  background-color: rgba(242, 242, 242, 0.502);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -304,13 +315,15 @@ h1 {
 #orders > ul > li > ul {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  width: 100%;
 }
 
 #orders ul li ul li {
+  width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
 }
 
