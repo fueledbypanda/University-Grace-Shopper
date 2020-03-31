@@ -7,6 +7,8 @@ const Products = ({
   setProductView,
   save,
   lowerInventory,
+  setViewed,
+  user
 }) => {
   return (
     <div id="products">
@@ -17,7 +19,10 @@ const Products = ({
             <li key={product.id}>
               <Link
                 to={`/products/${product.id}`}
-                onClick={el => setProductView(product)}
+                onClick={el => {
+                  setProductView(product)
+                  setViewed(product.id, user.id)
+                }}
               >
                 <div>{product.name}</div>
                 <img src={product.image} />

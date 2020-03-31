@@ -6,4 +6,5 @@ module.exports = {
   saved: require('./saved'),
   promos: require('./promos'),
   userProducts: require('./userProducts'),
+  lastViewed: require('./lastViewed')
 };

@@ -114,5 +114,5 @@ module.exports = {
   removeFromCart,
   createOrder,
   getLineItems,
-  subtractItem,
+  subtractItem
 };

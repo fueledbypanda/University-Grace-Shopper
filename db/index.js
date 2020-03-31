@@ -34,6 +34,7 @@ const sync = async () => {
     DROP TABLE IF EXISTS products cascade;
     DROP TABLE IF EXISTS saves;
     DROP TABLE IF EXISTS promos;
+    DROP TABLE IF EXISTS lastViewed;
 
     CREATE TABLE users(
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -84,6 +85,12 @@ const sync = async () => {
       id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
       code VARCHAR NOT NULL UNIQUE,
       discount INT NOT NULL
+    );
+
+    CREATE TABLE lastViewed(
+      id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+      userId UUID REFERENCES users(id) NOT NULL,
+      list text[]
     );
   `;
 
