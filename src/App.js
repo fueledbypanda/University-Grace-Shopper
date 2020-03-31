@@ -33,6 +33,7 @@ const App = () => {
   const [users, setUsers] = useState([]);
   const [user, setUser] = useState({});
   const [userProducts, setUserProducts] = useState([]);
+  const [lastViewed, setLastViewed] = useState([]);
 
   useEffect(() => {
     axios.get('/api/users').then(response => setUsers(response.data));
@@ -85,6 +86,35 @@ const App = () => {
       .get('/api/user_products')
       .then(response => setUserProducts(response.data));
   }, []);
+
+  useEffect(() => {
+    axios.get(`/api/lastViewed/`)
+      .then(response => console.log(response.data))
+  }, [auth])
+
+  const setViewed = async(productId, userId) => {
+    const prod = products.find(product => product.id === productId)
+    if(lastViewed.length < 5 ) {
+      if(!(lastViewed.includes(productId))) {
+        setLastViewed([...lastViewed, prod.id])
+        await axios.post(`/api/lastViewed/${userId}`, {list: lastViewed})
+      } else {
+        const newarr = lastViewed.splice(lastViewed.indexOf(productId), 1)
+        newarr.unshift(productId)
+        setLastViewed(newarr)
+        await axios.post(`/api/lastViewed/${userId}`, {list: lastViewed})
+      }
+    } else {
+      const newarr = lastViewed.map(item => {
+        if(item.id === lastViewed[4]) {
+          return prod.id
+        }
+        return item
+      }) 
+      setLastViewed(newarr)
+      await axios.post(`/api/lastViewed/${userId}`, {list: lastViewed})
+    }
+  }
 
   const login = async credentials => {
     const token = (await axios.post('/api/auth', credentials)).data.token;
@@ -314,6 +344,7 @@ const App = () => {
               orders={orders}
               productView={productView}
               setProductView={setProductView}
+              lastViewed={lastViewed}
             />
           </Route>
           <Route exact path="/cart">
@@ -337,6 +368,7 @@ const App = () => {
               setOrders={setOrders}
               userProducts={userProducts}
               setUserProducts={setUserProducts}
+              user={user}
             />
           </Route>
           <Route exact path="/orders">
@@ -359,6 +391,8 @@ const App = () => {
               setProductView={setProductView}
               save={save}
               lowerInventory={lowerInventory}
+              setViewed={setViewed}
+              user={user}
             />
           </Route>
           <Route exact path={`/products/${productView.id}`}>

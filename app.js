@@ -11,15 +11,15 @@ app.use('/assets', express.static(path.join(__dirname, 'assets')));
 app.use(require('cors')());
 app.use(express.json());
 
-var myLogger = function(req, res, next) {
-  console.log(req.body);
-  next();
-};
-app.use(myLogger);
+// var myLogger = function(req, res, next) {
+//   console.log(req.body);
+//   next();
+// };
+// app.use(myLogger);
 
-app.use(
-  morgan(':method :url :status :res[content-length] - :response-time ms')
-);
+// app.use(
+//   morgan(':method :url :status :res[content-length] - :response-time ms')
+// );
 
 const isLoggedIn = (req, res, next) => {
   if (!req.user) {
@@ -168,6 +168,25 @@ app.delete('/api/saves/:id', (req, res, next) => {
     .then(saves => res.send(saves))
     .catch(next);
 });
+
+app.get('/api/lastViewed/', (req, res, next) => {
+  db.models.lastViewed
+  .read()
+  .then(response => res.send(response))
+  .catch(next)
+})
+
+app.post('/api/lastViewed/:id', (req, res, next) => {
+  console.log(req.body.list)
+  db.models.lastViewed
+  .set(req.body.list, req.params.id)
+  .then(response => res.send(response))
+  .catch(next)
+})
+
+app.delete('/api/lastViewed/:id', (req, res, next) => {
+  
+})
 
 app.get('/api/products', (req, res, next) => {
   db.models.products
