@@ -122,7 +122,8 @@ const Cart = ({
                   to={`/products/${product.id}`}
                   onClick={el => setProductView(product)}
                 >
-                  {product && product.name}{' '}
+                  {product && product.name}
+                  <br />${product.price}
                 </Link>
                 <span>
                   <button
@@ -144,6 +145,12 @@ const Cart = ({
                   >
                     +
                   </button>
+                  <br />
+                  ($
+                  {Number(parseInt(product.price) * lineItem.quantity).toFixed(
+                    2
+                  )}
+                  )
                 </span>
                 <button
                   onClick={() => {
